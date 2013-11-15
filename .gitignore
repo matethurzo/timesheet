@@ -1,0 +1,12 @@
+timesheet-portlet/.settings/com.liferay.ide.eclipse.project.core.prefs
+timesheet-portlet/.settings/com.liferay.studio.eclipse.kaleo.core.prefs
+timesheet-portlet/.settings/org.eclipse.core.resources.prefs
+timesheet-portlet/docroot/css/.sass-cache/main.css
+timesheet-portlet/docroot/WEB-INF/lib/jboss-el.jar
+timesheet-portlet/docroot/WEB-INF/lib/jsf-api.jar
+timesheet-portlet/docroot/WEB-INF/lib/jsf-impl.jar
+timesheet-portlet/docroot/WEB-INF/lib/liferay-faces-bridge-api.jar
+timesheet-portlet/docroot/WEB-INF/lib/liferay-faces-bridge-impl.jar
+timesheet-portlet/docroot/WEB-INF/lib/liferay-faces-portal.jar
+timesheet-portlet/docroot/WEB-INF/lib/liferay-faces-util.jar
+timesheet-portlet/ivy.xml.MD5
