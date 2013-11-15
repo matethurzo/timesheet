@@ -10,3 +10,4 @@ timesheet-portlet/docroot/WEB-INF/lib/liferay-faces-bridge-impl.jar
 timesheet-portlet/docroot/WEB-INF/lib/liferay-faces-portal.jar
 timesheet-portlet/docroot/WEB-INF/lib/liferay-faces-util.jar
 timesheet-portlet/ivy.xml.MD5
+timesheet-portlet/docroot/WEB-INF/classes
