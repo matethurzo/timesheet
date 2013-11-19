@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.liferay.timesheet.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
@@ -24,115 +38,113 @@ import java.io.Serializable;
  * @generated
  */
 public interface TaskModel extends BaseModel<Task> {
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never modify or reference this interface directly. All methods that expect a task model instance should use the {@link Task} interface instead.
-     */
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. All methods that expect a task model instance should use the {@link Task} interface instead.
+	 */
 
-    /**
-     * Returns the primary key of this task.
-     *
-     * @return the primary key of this task
-     */
-    public long getPrimaryKey();
+	/**
+	 * Returns the primary key of this task.
+	 *
+	 * @return the primary key of this task
+	 */
+	public long getPrimaryKey();
 
-    /**
-     * Sets the primary key of this task.
-     *
-     * @param primaryKey the primary key of this task
-     */
-    public void setPrimaryKey(long primaryKey);
+	/**
+	 * Sets the primary key of this task.
+	 *
+	 * @param primaryKey the primary key of this task
+	 */
+	public void setPrimaryKey(long primaryKey);
 
-    /**
-     * Returns the task ID of this task.
-     *
-     * @return the task ID of this task
-     */
-    public long getTaskId();
+	/**
+	 * Returns the task ID of this task.
+	 *
+	 * @return the task ID of this task
+	 */
+	public long getTaskId();
 
-    /**
-     * Sets the task ID of this task.
-     *
-     * @param taskId the task ID of this task
-     */
-    public void setTaskId(long taskId);
+	/**
+	 * Sets the task ID of this task.
+	 *
+	 * @param taskId the task ID of this task
+	 */
+	public void setTaskId(long taskId);
 
-    /**
-     * Returns the user ID of this task.
-     *
-     * @return the user ID of this task
-     */
-    public long getUserId();
+	/**
+	 * Returns the user ID of this task.
+	 *
+	 * @return the user ID of this task
+	 */
+	public long getUserId();
 
-    /**
-     * Sets the user ID of this task.
-     *
-     * @param userId the user ID of this task
-     */
-    public void setUserId(long userId);
+	/**
+	 * Sets the user ID of this task.
+	 *
+	 * @param userId the user ID of this task
+	 */
+	public void setUserId(long userId);
 
-    /**
-     * Returns the user uuid of this task.
-     *
-     * @return the user uuid of this task
-     * @throws SystemException if a system exception occurred
-     */
-    public String getUserUuid() throws SystemException;
+	/**
+	 * Returns the user uuid of this task.
+	 *
+	 * @return the user uuid of this task
+	 * @throws SystemException if a system exception occurred
+	 */
+	public String getUserUuid() throws SystemException;
 
-    /**
-     * Sets the user uuid of this task.
-     *
-     * @param userUuid the user uuid of this task
-     */
-    public void setUserUuid(String userUuid);
+	/**
+	 * Sets the user uuid of this task.
+	 *
+	 * @param userUuid the user uuid of this task
+	 */
+	public void setUserUuid(String userUuid);
 
-    /**
-     * Returns the task name of this task.
-     *
-     * @return the task name of this task
-     */
-    @AutoEscape
-    public String getTaskName();
+	/**
+	 * Returns the task name of this task.
+	 *
+	 * @return the task name of this task
+	 */
+	@AutoEscape
+	public String getTaskName();
 
-    /**
-     * Sets the task name of this task.
-     *
-     * @param taskName the task name of this task
-     */
-    public void setTaskName(String taskName);
+	/**
+	 * Sets the task name of this task.
+	 *
+	 * @param taskName the task name of this task
+	 */
+	public void setTaskName(String taskName);
 
-    public boolean isNew();
+	public boolean isNew();
 
-    public void setNew(boolean n);
+	public void setNew(boolean n);
 
-    public boolean isCachedModel();
+	public boolean isCachedModel();
 
-    public void setCachedModel(boolean cachedModel);
+	public void setCachedModel(boolean cachedModel);
 
-    public boolean isEscapedModel();
+	public boolean isEscapedModel();
 
-    public Serializable getPrimaryKeyObj();
+	public Serializable getPrimaryKeyObj();
 
-    public void setPrimaryKeyObj(Serializable primaryKeyObj);
+	public void setPrimaryKeyObj(Serializable primaryKeyObj);
 
-    public ExpandoBridge getExpandoBridge();
+	public ExpandoBridge getExpandoBridge();
 
-    public void setExpandoBridgeAttributes(ServiceContext serviceContext);
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext);
 
-    public Object clone();
+	public Object clone();
 
-    public int compareTo(Task task);
+	public int compareTo(Task task);
 
-    public int hashCode();
+	public int hashCode();
 
-    public CacheModel<Task> toCacheModel();
+	public CacheModel<Task> toCacheModel();
 
-    public Task toEscapedModel();
+	public Task toEscapedModel();
 
-    public Task toUnescapedModel();
+	public String toString();
 
-    public String toString();
-
-    public String toXmlString();
+	public String toXmlString();
 }

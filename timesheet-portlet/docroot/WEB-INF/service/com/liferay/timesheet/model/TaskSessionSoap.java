@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.liferay.timesheet.model;
 
 import java.io.Serializable;
@@ -7,104 +21,106 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class is used by SOAP remote services.
+ * This class is used by SOAP remote services, specifically {@link com.liferay.timesheet.service.http.TaskSessionServiceSoap}.
  *
  * @author    Istvan Sajtos
+ * @see       com.liferay.timesheet.service.http.TaskSessionServiceSoap
  * @generated
  */
 public class TaskSessionSoap implements Serializable {
-    private long _taskSessionId;
-    private Date _endTime;
-    private Date _startTime;
-    private long _taskId;
+	public static TaskSessionSoap toSoapModel(TaskSession model) {
+		TaskSessionSoap soapModel = new TaskSessionSoap();
 
-    public TaskSessionSoap() {
-    }
+		soapModel.setTaskSessionId(model.getTaskSessionId());
+		soapModel.setTaskId(model.getTaskId());
+		soapModel.setStartTime(model.getStartTime());
+		soapModel.setEndTime(model.getEndTime());
 
-    public static TaskSessionSoap toSoapModel(TaskSession model) {
-        TaskSessionSoap soapModel = new TaskSessionSoap();
+		return soapModel;
+	}
 
-        soapModel.setTaskSessionId(model.getTaskSessionId());
-        soapModel.setEndTime(model.getEndTime());
-        soapModel.setStartTime(model.getStartTime());
-        soapModel.setTaskId(model.getTaskId());
+	public static TaskSessionSoap[] toSoapModels(TaskSession[] models) {
+		TaskSessionSoap[] soapModels = new TaskSessionSoap[models.length];
 
-        return soapModel;
-    }
+		for (int i = 0; i < models.length; i++) {
+			soapModels[i] = toSoapModel(models[i]);
+		}
 
-    public static TaskSessionSoap[] toSoapModels(TaskSession[] models) {
-        TaskSessionSoap[] soapModels = new TaskSessionSoap[models.length];
+		return soapModels;
+	}
 
-        for (int i = 0; i < models.length; i++) {
-            soapModels[i] = toSoapModel(models[i]);
-        }
+	public static TaskSessionSoap[][] toSoapModels(TaskSession[][] models) {
+		TaskSessionSoap[][] soapModels = null;
 
-        return soapModels;
-    }
+		if (models.length > 0) {
+			soapModels = new TaskSessionSoap[models.length][models[0].length];
+		}
+		else {
+			soapModels = new TaskSessionSoap[0][0];
+		}
 
-    public static TaskSessionSoap[][] toSoapModels(TaskSession[][] models) {
-        TaskSessionSoap[][] soapModels = null;
+		for (int i = 0; i < models.length; i++) {
+			soapModels[i] = toSoapModels(models[i]);
+		}
 
-        if (models.length > 0) {
-            soapModels = new TaskSessionSoap[models.length][models[0].length];
-        } else {
-            soapModels = new TaskSessionSoap[0][0];
-        }
+		return soapModels;
+	}
 
-        for (int i = 0; i < models.length; i++) {
-            soapModels[i] = toSoapModels(models[i]);
-        }
+	public static TaskSessionSoap[] toSoapModels(List<TaskSession> models) {
+		List<TaskSessionSoap> soapModels = new ArrayList<TaskSessionSoap>(models.size());
 
-        return soapModels;
-    }
+		for (TaskSession model : models) {
+			soapModels.add(toSoapModel(model));
+		}
 
-    public static TaskSessionSoap[] toSoapModels(List<TaskSession> models) {
-        List<TaskSessionSoap> soapModels = new ArrayList<TaskSessionSoap>(models.size());
+		return soapModels.toArray(new TaskSessionSoap[soapModels.size()]);
+	}
 
-        for (TaskSession model : models) {
-            soapModels.add(toSoapModel(model));
-        }
+	public TaskSessionSoap() {
+	}
 
-        return soapModels.toArray(new TaskSessionSoap[soapModels.size()]);
-    }
+	public long getPrimaryKey() {
+		return _taskSessionId;
+	}
 
-    public long getPrimaryKey() {
-        return _taskSessionId;
-    }
+	public void setPrimaryKey(long pk) {
+		setTaskSessionId(pk);
+	}
 
-    public void setPrimaryKey(long pk) {
-        setTaskSessionId(pk);
-    }
+	public long getTaskSessionId() {
+		return _taskSessionId;
+	}
 
-    public long getTaskSessionId() {
-        return _taskSessionId;
-    }
+	public void setTaskSessionId(long taskSessionId) {
+		_taskSessionId = taskSessionId;
+	}
 
-    public void setTaskSessionId(long taskSessionId) {
-        _taskSessionId = taskSessionId;
-    }
+	public long getTaskId() {
+		return _taskId;
+	}
 
-    public Date getEndTime() {
-        return _endTime;
-    }
+	public void setTaskId(long taskId) {
+		_taskId = taskId;
+	}
 
-    public void setEndTime(Date endTime) {
-        _endTime = endTime;
-    }
+	public Date getStartTime() {
+		return _startTime;
+	}
 
-    public Date getStartTime() {
-        return _startTime;
-    }
+	public void setStartTime(Date startTime) {
+		_startTime = startTime;
+	}
 
-    public void setStartTime(Date startTime) {
-        _startTime = startTime;
-    }
+	public Date getEndTime() {
+		return _endTime;
+	}
 
-    public long getTaskId() {
-        return _taskId;
-    }
+	public void setEndTime(Date endTime) {
+		_endTime = endTime;
+	}
 
-    public void setTaskId(long taskId) {
-        _taskId = taskId;
-    }
+	private long _taskSessionId;
+	private long _taskId;
+	private Date _startTime;
+	private Date _endTime;
 }

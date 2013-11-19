@@ -7,7 +7,7 @@ import com.liferay.timesheet.model.Task;
 import com.liferay.timesheet.service.TaskLocalServiceUtil;
 
 /**
- * @author Istvan Sajtos
+ * @author Adorjan
  * @generated
  */
 public abstract class TaskActionableDynamicQuery

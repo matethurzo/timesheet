@@ -1,6 +1,21 @@
+/**
+ * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
 package com.liferay.timesheet.model.impl;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -13,13 +28,16 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.timesheet.model.TaskSession;
 import com.liferay.timesheet.model.TaskSessionModel;
+import com.liferay.timesheet.model.TaskSessionSoap;
 
 import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,295 +53,348 @@ import java.util.Map;
  * @see com.liferay.timesheet.model.TaskSessionModel
  * @generated
  */
+@JSON(strict = true)
 public class TaskSessionModelImpl extends BaseModelImpl<TaskSession>
-    implements TaskSessionModel {
-    /*
-     * NOTE FOR DEVELOPERS:
-     *
-     * Never modify or reference this class directly. All methods that expect a task session model instance should use the {@link com.liferay.timesheet.model.TaskSession} interface instead.
-     */
-    public static final String TABLE_NAME = "timesheet_TaskSession";
-    public static final Object[][] TABLE_COLUMNS = {
-            { "taskSessionId", Types.BIGINT },
-            { "endTime", Types.TIMESTAMP },
-            { "startTime", Types.TIMESTAMP },
-            { "taskId", Types.BIGINT }
-        };
-    public static final String TABLE_SQL_CREATE = "create table timesheet_TaskSession (taskSessionId LONG not null primary key,endTime DATE null,startTime DATE null,taskId LONG)";
-    public static final String TABLE_SQL_DROP = "drop table timesheet_TaskSession";
-    public static final String DATA_SOURCE = "liferayDataSource";
-    public static final String SESSION_FACTORY = "liferaySessionFactory";
-    public static final String TX_MANAGER = "liferayTransactionManager";
-    public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-                "value.object.entity.cache.enabled.com.liferay.timesheet.model.TaskSession"),
-            true);
-    public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-                "value.object.finder.cache.enabled.com.liferay.timesheet.model.TaskSession"),
-            true);
-    public static final boolean COLUMN_BITMASK_ENABLED = false;
-    public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
-                "lock.expiration.time.com.liferay.timesheet.model.TaskSession"));
-    private static ClassLoader _classLoader = TaskSession.class.getClassLoader();
-    private static Class<?>[] _escapedModelInterfaces = new Class[] {
-            TaskSession.class
-        };
-    private long _taskSessionId;
-    private Date _endTime;
-    private Date _startTime;
-    private long _taskId;
-    private TaskSession _escapedModel;
+	implements TaskSessionModel {
+	/*
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a task session model instance should use the {@link com.liferay.timesheet.model.TaskSession} interface instead.
+	 */
+	public static final String TABLE_NAME = "timesheet_TaskSession";
+	public static final Object[][] TABLE_COLUMNS = {
+			{ "taskSessionId", Types.BIGINT },
+			{ "taskId", Types.BIGINT },
+			{ "startTime", Types.TIMESTAMP },
+			{ "endTime", Types.TIMESTAMP }
+		};
+	public static final String TABLE_SQL_CREATE = "create table timesheet_TaskSession (taskSessionId LONG not null primary key,taskId LONG,startTime DATE null,endTime DATE null)";
+	public static final String TABLE_SQL_DROP = "drop table timesheet_TaskSession";
+	public static final String DATA_SOURCE = "liferayDataSource";
+	public static final String SESSION_FACTORY = "liferaySessionFactory";
+	public static final String TX_MANAGER = "liferayTransactionManager";
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+				"value.object.entity.cache.enabled.com.liferay.timesheet.model.TaskSession"),
+			true);
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+				"value.object.finder.cache.enabled.com.liferay.timesheet.model.TaskSession"),
+			true);
+	public static final boolean COLUMN_BITMASK_ENABLED = false;
 
-    public TaskSessionModelImpl() {
-    }
+	/**
+	 * Converts the soap model instance into a normal model instance.
+	 *
+	 * @param soapModel the soap model instance to convert
+	 * @return the normal model instance
+	 */
+	public static TaskSession toModel(TaskSessionSoap soapModel) {
+		if (soapModel == null) {
+			return null;
+		}
 
-    public long getPrimaryKey() {
-        return _taskSessionId;
-    }
+		TaskSession model = new TaskSessionImpl();
 
-    public void setPrimaryKey(long primaryKey) {
-        setTaskSessionId(primaryKey);
-    }
+		model.setTaskSessionId(soapModel.getTaskSessionId());
+		model.setTaskId(soapModel.getTaskId());
+		model.setStartTime(soapModel.getStartTime());
+		model.setEndTime(soapModel.getEndTime());
 
-    public Serializable getPrimaryKeyObj() {
-        return new Long(_taskSessionId);
-    }
+		return model;
+	}
 
-    public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-        setPrimaryKey(((Long) primaryKeyObj).longValue());
-    }
+	/**
+	 * Converts the soap model instances into normal model instances.
+	 *
+	 * @param soapModels the soap model instances to convert
+	 * @return the normal model instances
+	 */
+	public static List<TaskSession> toModels(TaskSessionSoap[] soapModels) {
+		if (soapModels == null) {
+			return null;
+		}
 
-    public Class<?> getModelClass() {
-        return TaskSession.class;
-    }
+		List<TaskSession> models = new ArrayList<TaskSession>(soapModels.length);
 
-    public String getModelClassName() {
-        return TaskSession.class.getName();
-    }
+		for (TaskSessionSoap soapModel : soapModels) {
+			models.add(toModel(soapModel));
+		}
 
-    @Override
-    public Map<String, Object> getModelAttributes() {
-        Map<String, Object> attributes = new HashMap<String, Object>();
+		return models;
+	}
 
-        attributes.put("taskSessionId", getTaskSessionId());
-        attributes.put("endTime", getEndTime());
-        attributes.put("startTime", getStartTime());
-        attributes.put("taskId", getTaskId());
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
+				"lock.expiration.time.com.liferay.timesheet.model.TaskSession"));
 
-        return attributes;
-    }
+	public TaskSessionModelImpl() {
+	}
 
-    @Override
-    public void setModelAttributes(Map<String, Object> attributes) {
-        Long taskSessionId = (Long) attributes.get("taskSessionId");
+	public long getPrimaryKey() {
+		return _taskSessionId;
+	}
 
-        if (taskSessionId != null) {
-            setTaskSessionId(taskSessionId);
-        }
+	public void setPrimaryKey(long primaryKey) {
+		setTaskSessionId(primaryKey);
+	}
 
-        Date endTime = (Date) attributes.get("endTime");
+	public Serializable getPrimaryKeyObj() {
+		return new Long(_taskSessionId);
+	}
 
-        if (endTime != null) {
-            setEndTime(endTime);
-        }
+	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
+	}
 
-        Date startTime = (Date) attributes.get("startTime");
+	public Class<?> getModelClass() {
+		return TaskSession.class;
+	}
 
-        if (startTime != null) {
-            setStartTime(startTime);
-        }
+	public String getModelClassName() {
+		return TaskSession.class.getName();
+	}
 
-        Long taskId = (Long) attributes.get("taskId");
+	@Override
+	public Map<String, Object> getModelAttributes() {
+		Map<String, Object> attributes = new HashMap<String, Object>();
 
-        if (taskId != null) {
-            setTaskId(taskId);
-        }
-    }
+		attributes.put("taskSessionId", getTaskSessionId());
+		attributes.put("taskId", getTaskId());
+		attributes.put("startTime", getStartTime());
+		attributes.put("endTime", getEndTime());
 
-    public long getTaskSessionId() {
-        return _taskSessionId;
-    }
+		return attributes;
+	}
 
-    public void setTaskSessionId(long taskSessionId) {
-        _taskSessionId = taskSessionId;
-    }
+	@Override
+	public void setModelAttributes(Map<String, Object> attributes) {
+		Long taskSessionId = (Long)attributes.get("taskSessionId");
 
-    public Date getEndTime() {
-        return _endTime;
-    }
+		if (taskSessionId != null) {
+			setTaskSessionId(taskSessionId);
+		}
 
-    public void setEndTime(Date endTime) {
-        _endTime = endTime;
-    }
+		Long taskId = (Long)attributes.get("taskId");
 
-    public Date getStartTime() {
-        return _startTime;
-    }
+		if (taskId != null) {
+			setTaskId(taskId);
+		}
 
-    public void setStartTime(Date startTime) {
-        _startTime = startTime;
-    }
+		Date startTime = (Date)attributes.get("startTime");
 
-    public long getTaskId() {
-        return _taskId;
-    }
+		if (startTime != null) {
+			setStartTime(startTime);
+		}
 
-    public void setTaskId(long taskId) {
-        _taskId = taskId;
-    }
+		Date endTime = (Date)attributes.get("endTime");
 
-    @Override
-    public ExpandoBridge getExpandoBridge() {
-        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-            TaskSession.class.getName(), getPrimaryKey());
-    }
+		if (endTime != null) {
+			setEndTime(endTime);
+		}
+	}
 
-    @Override
-    public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-        ExpandoBridge expandoBridge = getExpandoBridge();
+	@JSON
+	public long getTaskSessionId() {
+		return _taskSessionId;
+	}
 
-        expandoBridge.setAttributes(serviceContext);
-    }
+	public void setTaskSessionId(long taskSessionId) {
+		_taskSessionId = taskSessionId;
+	}
 
-    @Override
-    public TaskSession toEscapedModel() {
-        if (_escapedModel == null) {
-            _escapedModel = (TaskSession) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
-        }
+	@JSON
+	public long getTaskId() {
+		return _taskId;
+	}
 
-        return _escapedModel;
-    }
+	public void setTaskId(long taskId) {
+		_taskId = taskId;
+	}
 
-    public TaskSession toUnescapedModel() {
-        return (TaskSession) this;
-    }
+	@JSON
+	public Date getStartTime() {
+		return _startTime;
+	}
 
-    @Override
-    public Object clone() {
-        TaskSessionImpl taskSessionImpl = new TaskSessionImpl();
+	public void setStartTime(Date startTime) {
+		_startTime = startTime;
+	}
 
-        taskSessionImpl.setTaskSessionId(getTaskSessionId());
-        taskSessionImpl.setEndTime(getEndTime());
-        taskSessionImpl.setStartTime(getStartTime());
-        taskSessionImpl.setTaskId(getTaskId());
+	@JSON
+	public Date getEndTime() {
+		return _endTime;
+	}
 
-        taskSessionImpl.resetOriginalValues();
+	public void setEndTime(Date endTime) {
+		_endTime = endTime;
+	}
 
-        return taskSessionImpl;
-    }
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+			TaskSession.class.getName(), getPrimaryKey());
+	}
 
-    public int compareTo(TaskSession taskSession) {
-        long primaryKey = taskSession.getPrimaryKey();
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		ExpandoBridge expandoBridge = getExpandoBridge();
 
-        if (getPrimaryKey() < primaryKey) {
-            return -1;
-        } else if (getPrimaryKey() > primaryKey) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
+		expandoBridge.setAttributes(serviceContext);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+	@Override
+	public TaskSession toEscapedModel() {
+		if (_escapedModelProxy == null) {
+			_escapedModelProxy = (TaskSession)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelProxyInterfaces,
+					new AutoEscapeBeanHandler(this));
+		}
 
-        if (!(obj instanceof TaskSession)) {
-            return false;
-        }
+		return _escapedModelProxy;
+	}
 
-        TaskSession taskSession = (TaskSession) obj;
+	@Override
+	public Object clone() {
+		TaskSessionImpl taskSessionImpl = new TaskSessionImpl();
 
-        long primaryKey = taskSession.getPrimaryKey();
+		taskSessionImpl.setTaskSessionId(getTaskSessionId());
+		taskSessionImpl.setTaskId(getTaskId());
+		taskSessionImpl.setStartTime(getStartTime());
+		taskSessionImpl.setEndTime(getEndTime());
 
-        if (getPrimaryKey() == primaryKey) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+		taskSessionImpl.resetOriginalValues();
 
-    @Override
-    public int hashCode() {
-        return (int) getPrimaryKey();
-    }
+		return taskSessionImpl;
+	}
 
-    @Override
-    public void resetOriginalValues() {
-    }
+	public int compareTo(TaskSession taskSession) {
+		long primaryKey = taskSession.getPrimaryKey();
 
-    @Override
-    public CacheModel<TaskSession> toCacheModel() {
-        TaskSessionCacheModel taskSessionCacheModel = new TaskSessionCacheModel();
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
+		}
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
 
-        taskSessionCacheModel.taskSessionId = getTaskSessionId();
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
 
-        Date endTime = getEndTime();
+		TaskSession taskSession = null;
 
-        if (endTime != null) {
-            taskSessionCacheModel.endTime = endTime.getTime();
-        } else {
-            taskSessionCacheModel.endTime = Long.MIN_VALUE;
-        }
+		try {
+			taskSession = (TaskSession)obj;
+		}
+		catch (ClassCastException cce) {
+			return false;
+		}
 
-        Date startTime = getStartTime();
+		long primaryKey = taskSession.getPrimaryKey();
 
-        if (startTime != null) {
-            taskSessionCacheModel.startTime = startTime.getTime();
-        } else {
-            taskSessionCacheModel.startTime = Long.MIN_VALUE;
-        }
+		if (getPrimaryKey() == primaryKey) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
-        taskSessionCacheModel.taskId = getTaskId();
+	@Override
+	public int hashCode() {
+		return (int)getPrimaryKey();
+	}
 
-        return taskSessionCacheModel;
-    }
+	@Override
+	public void resetOriginalValues() {
+	}
 
-    @Override
-    public String toString() {
-        StringBundler sb = new StringBundler(9);
+	@Override
+	public CacheModel<TaskSession> toCacheModel() {
+		TaskSessionCacheModel taskSessionCacheModel = new TaskSessionCacheModel();
 
-        sb.append("{taskSessionId=");
-        sb.append(getTaskSessionId());
-        sb.append(", endTime=");
-        sb.append(getEndTime());
-        sb.append(", startTime=");
-        sb.append(getStartTime());
-        sb.append(", taskId=");
-        sb.append(getTaskId());
-        sb.append("}");
+		taskSessionCacheModel.taskSessionId = getTaskSessionId();
 
-        return sb.toString();
-    }
+		taskSessionCacheModel.taskId = getTaskId();
 
-    public String toXmlString() {
-        StringBundler sb = new StringBundler(16);
+		Date startTime = getStartTime();
 
-        sb.append("<model><model-name>");
-        sb.append("com.liferay.timesheet.model.TaskSession");
-        sb.append("</model-name>");
+		if (startTime != null) {
+			taskSessionCacheModel.startTime = startTime.getTime();
+		}
+		else {
+			taskSessionCacheModel.startTime = Long.MIN_VALUE;
+		}
 
-        sb.append(
-            "<column><column-name>taskSessionId</column-name><column-value><![CDATA[");
-        sb.append(getTaskSessionId());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>endTime</column-name><column-value><![CDATA[");
-        sb.append(getEndTime());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>startTime</column-name><column-value><![CDATA[");
-        sb.append(getStartTime());
-        sb.append("]]></column-value></column>");
-        sb.append(
-            "<column><column-name>taskId</column-name><column-value><![CDATA[");
-        sb.append(getTaskId());
-        sb.append("]]></column-value></column>");
+		Date endTime = getEndTime();
 
-        sb.append("</model>");
+		if (endTime != null) {
+			taskSessionCacheModel.endTime = endTime.getTime();
+		}
+		else {
+			taskSessionCacheModel.endTime = Long.MIN_VALUE;
+		}
 
-        return sb.toString();
-    }
+		return taskSessionCacheModel;
+	}
+
+	@Override
+	public String toString() {
+		StringBundler sb = new StringBundler(9);
+
+		sb.append("{taskSessionId=");
+		sb.append(getTaskSessionId());
+		sb.append(", taskId=");
+		sb.append(getTaskId());
+		sb.append(", startTime=");
+		sb.append(getStartTime());
+		sb.append(", endTime=");
+		sb.append(getEndTime());
+		sb.append("}");
+
+		return sb.toString();
+	}
+
+	public String toXmlString() {
+		StringBundler sb = new StringBundler(16);
+
+		sb.append("<model><model-name>");
+		sb.append("com.liferay.timesheet.model.TaskSession");
+		sb.append("</model-name>");
+
+		sb.append(
+			"<column><column-name>taskSessionId</column-name><column-value><![CDATA[");
+		sb.append(getTaskSessionId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>taskId</column-name><column-value><![CDATA[");
+		sb.append(getTaskId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>startTime</column-name><column-value><![CDATA[");
+		sb.append(getStartTime());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>endTime</column-name><column-value><![CDATA[");
+		sb.append(getEndTime());
+		sb.append("]]></column-value></column>");
+
+		sb.append("</model>");
+
+		return sb.toString();
+	}
+
+	private static ClassLoader _classLoader = TaskSession.class.getClassLoader();
+	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+			TaskSession.class
+		};
+	private long _taskSessionId;
+	private long _taskId;
+	private Date _startTime;
+	private Date _endTime;
+	private TaskSession _escapedModelProxy;
 }
