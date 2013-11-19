@@ -1,17 +1,3 @@
-/**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
-
 package com.liferay.timesheet.model.impl;
 
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,51 +17,50 @@ import java.util.Date;
  * @generated
  */
 public class TaskSessionCacheModel implements CacheModel<TaskSession>,
-	Serializable {
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(9);
+    Serializable {
+    public long taskSessionId;
+    public long endTime;
+    public long startTime;
+    public long taskId;
 
-		sb.append("{taskSessionId=");
-		sb.append(taskSessionId);
-		sb.append(", taskId=");
-		sb.append(taskId);
-		sb.append(", startTime=");
-		sb.append(startTime);
-		sb.append(", endTime=");
-		sb.append(endTime);
-		sb.append("}");
+    @Override
+    public String toString() {
+        StringBundler sb = new StringBundler(9);
 
-		return sb.toString();
-	}
+        sb.append("{taskSessionId=");
+        sb.append(taskSessionId);
+        sb.append(", endTime=");
+        sb.append(endTime);
+        sb.append(", startTime=");
+        sb.append(startTime);
+        sb.append(", taskId=");
+        sb.append(taskId);
+        sb.append("}");
 
-	public TaskSession toEntityModel() {
-		TaskSessionImpl taskSessionImpl = new TaskSessionImpl();
+        return sb.toString();
+    }
 
-		taskSessionImpl.setTaskSessionId(taskSessionId);
-		taskSessionImpl.setTaskId(taskId);
+    public TaskSession toEntityModel() {
+        TaskSessionImpl taskSessionImpl = new TaskSessionImpl();
 
-		if (startTime == Long.MIN_VALUE) {
-			taskSessionImpl.setStartTime(null);
-		}
-		else {
-			taskSessionImpl.setStartTime(new Date(startTime));
-		}
+        taskSessionImpl.setTaskSessionId(taskSessionId);
 
-		if (endTime == Long.MIN_VALUE) {
-			taskSessionImpl.setEndTime(null);
-		}
-		else {
-			taskSessionImpl.setEndTime(new Date(endTime));
-		}
+        if (endTime == Long.MIN_VALUE) {
+            taskSessionImpl.setEndTime(null);
+        } else {
+            taskSessionImpl.setEndTime(new Date(endTime));
+        }
 
-		taskSessionImpl.resetOriginalValues();
+        if (startTime == Long.MIN_VALUE) {
+            taskSessionImpl.setStartTime(null);
+        } else {
+            taskSessionImpl.setStartTime(new Date(startTime));
+        }
 
-		return taskSessionImpl;
-	}
+        taskSessionImpl.setTaskId(taskId);
 
-	public long taskSessionId;
-	public long taskId;
-	public long startTime;
-	public long endTime;
+        taskSessionImpl.resetOriginalValues();
+
+        return taskSessionImpl;
+    }
 }

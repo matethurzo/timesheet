@@ -1,17 +1,3 @@
-/**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
-
 package com.liferay.timesheet.service.base;
 
 import com.liferay.counter.service.CounterLocalService;
@@ -39,11 +25,8 @@ import com.liferay.portal.service.persistence.UserPersistence;
 
 import com.liferay.timesheet.model.TaskSession;
 import com.liferay.timesheet.service.TaskLocalService;
-import com.liferay.timesheet.service.TaskService;
 import com.liferay.timesheet.service.TaskSessionLocalService;
-import com.liferay.timesheet.service.TaskSessionService;
 import com.liferay.timesheet.service.persistence.TaskPersistence;
-import com.liferay.timesheet.service.persistence.TaskSessionFinder;
 import com.liferay.timesheet.service.persistence.TaskSessionPersistence;
 
 import java.io.Serializable;
@@ -65,581 +48,519 @@ import javax.sql.DataSource;
  * @generated
  */
 public abstract class TaskSessionLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements TaskSessionLocalService,
-		IdentifiableBean {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.timesheet.service.TaskSessionLocalServiceUtil} to access the task session local service.
-	 */
+    extends BaseLocalServiceImpl implements TaskSessionLocalService,
+        IdentifiableBean {
+    @BeanReference(type = TaskLocalService.class)
+    protected TaskLocalService taskLocalService;
+    @BeanReference(type = TaskPersistence.class)
+    protected TaskPersistence taskPersistence;
+    @BeanReference(type = TaskSessionLocalService.class)
+    protected TaskSessionLocalService taskSessionLocalService;
+    @BeanReference(type = TaskSessionPersistence.class)
+    protected TaskSessionPersistence taskSessionPersistence;
+    @BeanReference(type = CounterLocalService.class)
+    protected CounterLocalService counterLocalService;
+    @BeanReference(type = ResourceLocalService.class)
+    protected ResourceLocalService resourceLocalService;
+    @BeanReference(type = ResourceService.class)
+    protected ResourceService resourceService;
+    @BeanReference(type = ResourcePersistence.class)
+    protected ResourcePersistence resourcePersistence;
+    @BeanReference(type = UserLocalService.class)
+    protected UserLocalService userLocalService;
+    @BeanReference(type = UserService.class)
+    protected UserService userService;
+    @BeanReference(type = UserPersistence.class)
+    protected UserPersistence userPersistence;
+    private String _beanIdentifier;
+    private ClassLoader _classLoader;
+    private TaskSessionLocalServiceClpInvoker _clpInvoker = new TaskSessionLocalServiceClpInvoker();
 
-	/**
-	 * Adds the task session to the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param taskSession the task session
-	 * @return the task session that was added
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Indexable(type = IndexableType.REINDEX)
-	public TaskSession addTaskSession(TaskSession taskSession)
-		throws SystemException {
-		taskSession.setNew(true);
+    /*
+     * NOTE FOR DEVELOPERS:
+     *
+     * Never modify or reference this class directly. Always use {@link com.liferay.timesheet.service.TaskSessionLocalServiceUtil} to access the task session local service.
+     */
 
-		return taskSessionPersistence.update(taskSession, false);
-	}
+    /**
+     * Adds the task session to the database. Also notifies the appropriate model listeners.
+     *
+     * @param taskSession the task session
+     * @return the task session that was added
+     * @throws SystemException if a system exception occurred
+     */
+    @Indexable(type = IndexableType.REINDEX)
+    public TaskSession addTaskSession(TaskSession taskSession)
+        throws SystemException {
+        taskSession.setNew(true);
 
-	/**
-	 * Creates a new task session with the primary key. Does not add the task session to the database.
-	 *
-	 * @param taskSessionId the primary key for the new task session
-	 * @return the new task session
-	 */
-	public TaskSession createTaskSession(long taskSessionId) {
-		return taskSessionPersistence.create(taskSessionId);
-	}
+        return taskSessionPersistence.update(taskSession, false);
+    }
 
-	/**
-	 * Deletes the task session with the primary key from the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param taskSessionId the primary key of the task session
-	 * @return the task session that was removed
-	 * @throws PortalException if a task session with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Indexable(type = IndexableType.DELETE)
-	public TaskSession deleteTaskSession(long taskSessionId)
-		throws PortalException, SystemException {
-		return taskSessionPersistence.remove(taskSessionId);
-	}
+    /**
+     * Creates a new task session with the primary key. Does not add the task session to the database.
+     *
+     * @param taskSessionId the primary key for the new task session
+     * @return the new task session
+     */
+    public TaskSession createTaskSession(long taskSessionId) {
+        return taskSessionPersistence.create(taskSessionId);
+    }
 
-	/**
-	 * Deletes the task session from the database. Also notifies the appropriate model listeners.
-	 *
-	 * @param taskSession the task session
-	 * @return the task session that was removed
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Indexable(type = IndexableType.DELETE)
-	public TaskSession deleteTaskSession(TaskSession taskSession)
-		throws SystemException {
-		return taskSessionPersistence.remove(taskSession);
-	}
+    /**
+     * Deletes the task session with the primary key from the database. Also notifies the appropriate model listeners.
+     *
+     * @param taskSessionId the primary key of the task session
+     * @return the task session that was removed
+     * @throws PortalException if a task session with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    @Indexable(type = IndexableType.DELETE)
+    public TaskSession deleteTaskSession(long taskSessionId)
+        throws PortalException, SystemException {
+        return taskSessionPersistence.remove(taskSessionId);
+    }
 
-	public DynamicQuery dynamicQuery() {
-		Class<?> clazz = getClass();
+    /**
+     * Deletes the task session from the database. Also notifies the appropriate model listeners.
+     *
+     * @param taskSession the task session
+     * @return the task session that was removed
+     * @throws SystemException if a system exception occurred
+     */
+    @Indexable(type = IndexableType.DELETE)
+    public TaskSession deleteTaskSession(TaskSession taskSession)
+        throws SystemException {
+        return taskSessionPersistence.remove(taskSession);
+    }
 
-		return DynamicQueryFactoryUtil.forClass(TaskSession.class,
-			clazz.getClassLoader());
-	}
+    public DynamicQuery dynamicQuery() {
+        Class<?> clazz = getClass();
 
-	/**
-	 * Performs a dynamic query on the database and returns the matching rows.
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @return the matching rows
-	 * @throws SystemException if a system exception occurred
-	 */
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery)
-		throws SystemException {
-		return taskSessionPersistence.findWithDynamicQuery(dynamicQuery);
-	}
+        return DynamicQueryFactoryUtil.forClass(TaskSession.class,
+            clazz.getClassLoader());
+    }
 
-	/**
-	 * Performs a dynamic query on the database and returns a range of the matching rows.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-	 * </p>
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @param start the lower bound of the range of model instances
-	 * @param end the upper bound of the range of model instances (not inclusive)
-	 * @return the range of matching rows
-	 * @throws SystemException if a system exception occurred
-	 */
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
-		throws SystemException {
-		return taskSessionPersistence.findWithDynamicQuery(dynamicQuery, start,
-			end);
-	}
+    /**
+     * Performs a dynamic query on the database and returns the matching rows.
+     *
+     * @param dynamicQuery the dynamic query
+     * @return the matching rows
+     * @throws SystemException if a system exception occurred
+     */
+    @SuppressWarnings("rawtypes")
+    public List dynamicQuery(DynamicQuery dynamicQuery)
+        throws SystemException {
+        return taskSessionPersistence.findWithDynamicQuery(dynamicQuery);
+    }
 
-	/**
-	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-	 * </p>
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @param start the lower bound of the range of model instances
-	 * @param end the upper bound of the range of model instances (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching rows
-	 * @throws SystemException if a system exception occurred
-	 */
-	@SuppressWarnings("rawtypes")
-	public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
-		return taskSessionPersistence.findWithDynamicQuery(dynamicQuery, start,
-			end, orderByComparator);
-	}
+    /**
+     * Performs a dynamic query on the database and returns a range of the matching rows.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param dynamicQuery the dynamic query
+     * @param start the lower bound of the range of model instances
+     * @param end the upper bound of the range of model instances (not inclusive)
+     * @return the range of matching rows
+     * @throws SystemException if a system exception occurred
+     */
+    @SuppressWarnings("rawtypes")
+    public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end)
+        throws SystemException {
+        return taskSessionPersistence.findWithDynamicQuery(dynamicQuery, start,
+            end);
+    }
 
-	/**
-	 * Returns the number of rows that match the dynamic query.
-	 *
-	 * @param dynamicQuery the dynamic query
-	 * @return the number of rows that match the dynamic query
-	 * @throws SystemException if a system exception occurred
-	 */
-	public long dynamicQueryCount(DynamicQuery dynamicQuery)
-		throws SystemException {
-		return taskSessionPersistence.countWithDynamicQuery(dynamicQuery);
-	}
+    /**
+     * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param dynamicQuery the dynamic query
+     * @param start the lower bound of the range of model instances
+     * @param end the upper bound of the range of model instances (not inclusive)
+     * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+     * @return the ordered range of matching rows
+     * @throws SystemException if a system exception occurred
+     */
+    @SuppressWarnings("rawtypes")
+    public List dynamicQuery(DynamicQuery dynamicQuery, int start, int end,
+        OrderByComparator orderByComparator) throws SystemException {
+        return taskSessionPersistence.findWithDynamicQuery(dynamicQuery, start,
+            end, orderByComparator);
+    }
 
-	public TaskSession fetchTaskSession(long taskSessionId)
-		throws SystemException {
-		return taskSessionPersistence.fetchByPrimaryKey(taskSessionId);
-	}
+    /**
+     * Returns the number of rows that match the dynamic query.
+     *
+     * @param dynamicQuery the dynamic query
+     * @return the number of rows that match the dynamic query
+     * @throws SystemException if a system exception occurred
+     */
+    public long dynamicQueryCount(DynamicQuery dynamicQuery)
+        throws SystemException {
+        return taskSessionPersistence.countWithDynamicQuery(dynamicQuery);
+    }
 
-	/**
-	 * Returns the task session with the primary key.
-	 *
-	 * @param taskSessionId the primary key of the task session
-	 * @return the task session
-	 * @throws PortalException if a task session with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public TaskSession getTaskSession(long taskSessionId)
-		throws PortalException, SystemException {
-		return taskSessionPersistence.findByPrimaryKey(taskSessionId);
-	}
+    public TaskSession fetchTaskSession(long taskSessionId)
+        throws SystemException {
+        return taskSessionPersistence.fetchByPrimaryKey(taskSessionId);
+    }
 
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException, SystemException {
-		return taskSessionPersistence.findByPrimaryKey(primaryKeyObj);
-	}
+    /**
+     * Returns the task session with the primary key.
+     *
+     * @param taskSessionId the primary key of the task session
+     * @return the task session
+     * @throws PortalException if a task session with the primary key could not be found
+     * @throws SystemException if a system exception occurred
+     */
+    public TaskSession getTaskSession(long taskSessionId)
+        throws PortalException, SystemException {
+        return taskSessionPersistence.findByPrimaryKey(taskSessionId);
+    }
 
-	/**
-	 * Returns a range of all the task sessions.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-	 * </p>
-	 *
-	 * @param start the lower bound of the range of task sessions
-	 * @param end the upper bound of the range of task sessions (not inclusive)
-	 * @return the range of task sessions
-	 * @throws SystemException if a system exception occurred
-	 */
-	public List<TaskSession> getTaskSessions(int start, int end)
-		throws SystemException {
-		return taskSessionPersistence.findAll(start, end);
-	}
+    public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+        throws PortalException, SystemException {
+        return taskSessionPersistence.findByPrimaryKey(primaryKeyObj);
+    }
 
-	/**
-	 * Returns the number of task sessions.
-	 *
-	 * @return the number of task sessions
-	 * @throws SystemException if a system exception occurred
-	 */
-	public int getTaskSessionsCount() throws SystemException {
-		return taskSessionPersistence.countAll();
-	}
+    /**
+     * Returns a range of all the task sessions.
+     *
+     * <p>
+     * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+     * </p>
+     *
+     * @param start the lower bound of the range of task sessions
+     * @param end the upper bound of the range of task sessions (not inclusive)
+     * @return the range of task sessions
+     * @throws SystemException if a system exception occurred
+     */
+    public List<TaskSession> getTaskSessions(int start, int end)
+        throws SystemException {
+        return taskSessionPersistence.findAll(start, end);
+    }
 
-	/**
-	 * Updates the task session in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	 *
-	 * @param taskSession the task session
-	 * @return the task session that was updated
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Indexable(type = IndexableType.REINDEX)
-	public TaskSession updateTaskSession(TaskSession taskSession)
-		throws SystemException {
-		return updateTaskSession(taskSession, true);
-	}
+    /**
+     * Returns the number of task sessions.
+     *
+     * @return the number of task sessions
+     * @throws SystemException if a system exception occurred
+     */
+    public int getTaskSessionsCount() throws SystemException {
+        return taskSessionPersistence.countAll();
+    }
 
-	/**
-	 * Updates the task session in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	 *
-	 * @param taskSession the task session
-	 * @param merge whether to merge the task session with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-	 * @return the task session that was updated
-	 * @throws SystemException if a system exception occurred
-	 */
-	@Indexable(type = IndexableType.REINDEX)
-	public TaskSession updateTaskSession(TaskSession taskSession, boolean merge)
-		throws SystemException {
-		taskSession.setNew(false);
+    /**
+     * Updates the task session in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+     *
+     * @param taskSession the task session
+     * @return the task session that was updated
+     * @throws SystemException if a system exception occurred
+     */
+    @Indexable(type = IndexableType.REINDEX)
+    public TaskSession updateTaskSession(TaskSession taskSession)
+        throws SystemException {
+        return updateTaskSession(taskSession, true);
+    }
 
-		return taskSessionPersistence.update(taskSession, merge);
-	}
+    /**
+     * Updates the task session in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+     *
+     * @param taskSession the task session
+     * @param merge whether to merge the task session with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
+     * @return the task session that was updated
+     * @throws SystemException if a system exception occurred
+     */
+    @Indexable(type = IndexableType.REINDEX)
+    public TaskSession updateTaskSession(TaskSession taskSession, boolean merge)
+        throws SystemException {
+        taskSession.setNew(false);
 
-	/**
-	 * Returns the task local service.
-	 *
-	 * @return the task local service
-	 */
-	public TaskLocalService getTaskLocalService() {
-		return taskLocalService;
-	}
+        return taskSessionPersistence.update(taskSession, merge);
+    }
 
-	/**
-	 * Sets the task local service.
-	 *
-	 * @param taskLocalService the task local service
-	 */
-	public void setTaskLocalService(TaskLocalService taskLocalService) {
-		this.taskLocalService = taskLocalService;
-	}
+    /**
+     * Returns the task local service.
+     *
+     * @return the task local service
+     */
+    public TaskLocalService getTaskLocalService() {
+        return taskLocalService;
+    }
 
-	/**
-	 * Returns the task remote service.
-	 *
-	 * @return the task remote service
-	 */
-	public TaskService getTaskService() {
-		return taskService;
-	}
+    /**
+     * Sets the task local service.
+     *
+     * @param taskLocalService the task local service
+     */
+    public void setTaskLocalService(TaskLocalService taskLocalService) {
+        this.taskLocalService = taskLocalService;
+    }
 
-	/**
-	 * Sets the task remote service.
-	 *
-	 * @param taskService the task remote service
-	 */
-	public void setTaskService(TaskService taskService) {
-		this.taskService = taskService;
-	}
+    /**
+     * Returns the task persistence.
+     *
+     * @return the task persistence
+     */
+    public TaskPersistence getTaskPersistence() {
+        return taskPersistence;
+    }
 
-	/**
-	 * Returns the task persistence.
-	 *
-	 * @return the task persistence
-	 */
-	public TaskPersistence getTaskPersistence() {
-		return taskPersistence;
-	}
+    /**
+     * Sets the task persistence.
+     *
+     * @param taskPersistence the task persistence
+     */
+    public void setTaskPersistence(TaskPersistence taskPersistence) {
+        this.taskPersistence = taskPersistence;
+    }
 
-	/**
-	 * Sets the task persistence.
-	 *
-	 * @param taskPersistence the task persistence
-	 */
-	public void setTaskPersistence(TaskPersistence taskPersistence) {
-		this.taskPersistence = taskPersistence;
-	}
+    /**
+     * Returns the task session local service.
+     *
+     * @return the task session local service
+     */
+    public TaskSessionLocalService getTaskSessionLocalService() {
+        return taskSessionLocalService;
+    }
 
-	/**
-	 * Returns the task session local service.
-	 *
-	 * @return the task session local service
-	 */
-	public TaskSessionLocalService getTaskSessionLocalService() {
-		return taskSessionLocalService;
-	}
+    /**
+     * Sets the task session local service.
+     *
+     * @param taskSessionLocalService the task session local service
+     */
+    public void setTaskSessionLocalService(
+        TaskSessionLocalService taskSessionLocalService) {
+        this.taskSessionLocalService = taskSessionLocalService;
+    }
 
-	/**
-	 * Sets the task session local service.
-	 *
-	 * @param taskSessionLocalService the task session local service
-	 */
-	public void setTaskSessionLocalService(
-		TaskSessionLocalService taskSessionLocalService) {
-		this.taskSessionLocalService = taskSessionLocalService;
-	}
+    /**
+     * Returns the task session persistence.
+     *
+     * @return the task session persistence
+     */
+    public TaskSessionPersistence getTaskSessionPersistence() {
+        return taskSessionPersistence;
+    }
 
-	/**
-	 * Returns the task session remote service.
-	 *
-	 * @return the task session remote service
-	 */
-	public TaskSessionService getTaskSessionService() {
-		return taskSessionService;
-	}
+    /**
+     * Sets the task session persistence.
+     *
+     * @param taskSessionPersistence the task session persistence
+     */
+    public void setTaskSessionPersistence(
+        TaskSessionPersistence taskSessionPersistence) {
+        this.taskSessionPersistence = taskSessionPersistence;
+    }
 
-	/**
-	 * Sets the task session remote service.
-	 *
-	 * @param taskSessionService the task session remote service
-	 */
-	public void setTaskSessionService(TaskSessionService taskSessionService) {
-		this.taskSessionService = taskSessionService;
-	}
+    /**
+     * Returns the counter local service.
+     *
+     * @return the counter local service
+     */
+    public CounterLocalService getCounterLocalService() {
+        return counterLocalService;
+    }
 
-	/**
-	 * Returns the task session persistence.
-	 *
-	 * @return the task session persistence
-	 */
-	public TaskSessionPersistence getTaskSessionPersistence() {
-		return taskSessionPersistence;
-	}
+    /**
+     * Sets the counter local service.
+     *
+     * @param counterLocalService the counter local service
+     */
+    public void setCounterLocalService(CounterLocalService counterLocalService) {
+        this.counterLocalService = counterLocalService;
+    }
 
-	/**
-	 * Sets the task session persistence.
-	 *
-	 * @param taskSessionPersistence the task session persistence
-	 */
-	public void setTaskSessionPersistence(
-		TaskSessionPersistence taskSessionPersistence) {
-		this.taskSessionPersistence = taskSessionPersistence;
-	}
+    /**
+     * Returns the resource local service.
+     *
+     * @return the resource local service
+     */
+    public ResourceLocalService getResourceLocalService() {
+        return resourceLocalService;
+    }
 
-	/**
-	 * Returns the task session finder.
-	 *
-	 * @return the task session finder
-	 */
-	public TaskSessionFinder getTaskSessionFinder() {
-		return taskSessionFinder;
-	}
+    /**
+     * Sets the resource local service.
+     *
+     * @param resourceLocalService the resource local service
+     */
+    public void setResourceLocalService(
+        ResourceLocalService resourceLocalService) {
+        this.resourceLocalService = resourceLocalService;
+    }
 
-	/**
-	 * Sets the task session finder.
-	 *
-	 * @param taskSessionFinder the task session finder
-	 */
-	public void setTaskSessionFinder(TaskSessionFinder taskSessionFinder) {
-		this.taskSessionFinder = taskSessionFinder;
-	}
+    /**
+     * Returns the resource remote service.
+     *
+     * @return the resource remote service
+     */
+    public ResourceService getResourceService() {
+        return resourceService;
+    }
 
-	/**
-	 * Returns the counter local service.
-	 *
-	 * @return the counter local service
-	 */
-	public CounterLocalService getCounterLocalService() {
-		return counterLocalService;
-	}
+    /**
+     * Sets the resource remote service.
+     *
+     * @param resourceService the resource remote service
+     */
+    public void setResourceService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
 
-	/**
-	 * Sets the counter local service.
-	 *
-	 * @param counterLocalService the counter local service
-	 */
-	public void setCounterLocalService(CounterLocalService counterLocalService) {
-		this.counterLocalService = counterLocalService;
-	}
+    /**
+     * Returns the resource persistence.
+     *
+     * @return the resource persistence
+     */
+    public ResourcePersistence getResourcePersistence() {
+        return resourcePersistence;
+    }
 
-	/**
-	 * Returns the resource local service.
-	 *
-	 * @return the resource local service
-	 */
-	public ResourceLocalService getResourceLocalService() {
-		return resourceLocalService;
-	}
+    /**
+     * Sets the resource persistence.
+     *
+     * @param resourcePersistence the resource persistence
+     */
+    public void setResourcePersistence(ResourcePersistence resourcePersistence) {
+        this.resourcePersistence = resourcePersistence;
+    }
 
-	/**
-	 * Sets the resource local service.
-	 *
-	 * @param resourceLocalService the resource local service
-	 */
-	public void setResourceLocalService(
-		ResourceLocalService resourceLocalService) {
-		this.resourceLocalService = resourceLocalService;
-	}
+    /**
+     * Returns the user local service.
+     *
+     * @return the user local service
+     */
+    public UserLocalService getUserLocalService() {
+        return userLocalService;
+    }
 
-	/**
-	 * Returns the resource remote service.
-	 *
-	 * @return the resource remote service
-	 */
-	public ResourceService getResourceService() {
-		return resourceService;
-	}
+    /**
+     * Sets the user local service.
+     *
+     * @param userLocalService the user local service
+     */
+    public void setUserLocalService(UserLocalService userLocalService) {
+        this.userLocalService = userLocalService;
+    }
 
-	/**
-	 * Sets the resource remote service.
-	 *
-	 * @param resourceService the resource remote service
-	 */
-	public void setResourceService(ResourceService resourceService) {
-		this.resourceService = resourceService;
-	}
+    /**
+     * Returns the user remote service.
+     *
+     * @return the user remote service
+     */
+    public UserService getUserService() {
+        return userService;
+    }
 
-	/**
-	 * Returns the resource persistence.
-	 *
-	 * @return the resource persistence
-	 */
-	public ResourcePersistence getResourcePersistence() {
-		return resourcePersistence;
-	}
+    /**
+     * Sets the user remote service.
+     *
+     * @param userService the user remote service
+     */
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
-	/**
-	 * Sets the resource persistence.
-	 *
-	 * @param resourcePersistence the resource persistence
-	 */
-	public void setResourcePersistence(ResourcePersistence resourcePersistence) {
-		this.resourcePersistence = resourcePersistence;
-	}
+    /**
+     * Returns the user persistence.
+     *
+     * @return the user persistence
+     */
+    public UserPersistence getUserPersistence() {
+        return userPersistence;
+    }
 
-	/**
-	 * Returns the user local service.
-	 *
-	 * @return the user local service
-	 */
-	public UserLocalService getUserLocalService() {
-		return userLocalService;
-	}
+    /**
+     * Sets the user persistence.
+     *
+     * @param userPersistence the user persistence
+     */
+    public void setUserPersistence(UserPersistence userPersistence) {
+        this.userPersistence = userPersistence;
+    }
 
-	/**
-	 * Sets the user local service.
-	 *
-	 * @param userLocalService the user local service
-	 */
-	public void setUserLocalService(UserLocalService userLocalService) {
-		this.userLocalService = userLocalService;
-	}
+    public void afterPropertiesSet() {
+        Class<?> clazz = getClass();
 
-	/**
-	 * Returns the user remote service.
-	 *
-	 * @return the user remote service
-	 */
-	public UserService getUserService() {
-		return userService;
-	}
+        _classLoader = clazz.getClassLoader();
 
-	/**
-	 * Sets the user remote service.
-	 *
-	 * @param userService the user remote service
-	 */
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+        PersistedModelLocalServiceRegistryUtil.register("com.liferay.timesheet.model.TaskSession",
+            taskSessionLocalService);
+    }
 
-	/**
-	 * Returns the user persistence.
-	 *
-	 * @return the user persistence
-	 */
-	public UserPersistence getUserPersistence() {
-		return userPersistence;
-	}
+    public void destroy() {
+        PersistedModelLocalServiceRegistryUtil.unregister(
+            "com.liferay.timesheet.model.TaskSession");
+    }
 
-	/**
-	 * Sets the user persistence.
-	 *
-	 * @param userPersistence the user persistence
-	 */
-	public void setUserPersistence(UserPersistence userPersistence) {
-		this.userPersistence = userPersistence;
-	}
+    /**
+     * Returns the Spring bean ID for this bean.
+     *
+     * @return the Spring bean ID for this bean
+     */
+    public String getBeanIdentifier() {
+        return _beanIdentifier;
+    }
 
-	public void afterPropertiesSet() {
-		Class<?> clazz = getClass();
+    /**
+     * Sets the Spring bean ID for this bean.
+     *
+     * @param beanIdentifier the Spring bean ID for this bean
+     */
+    public void setBeanIdentifier(String beanIdentifier) {
+        _beanIdentifier = beanIdentifier;
+    }
 
-		_classLoader = clazz.getClassLoader();
+    public Object invokeMethod(String name, String[] parameterTypes,
+        Object[] arguments) throws Throwable {
+        Thread currentThread = Thread.currentThread();
 
-		PersistedModelLocalServiceRegistryUtil.register("com.liferay.timesheet.model.TaskSession",
-			taskSessionLocalService);
-	}
+        ClassLoader contextClassLoader = currentThread.getContextClassLoader();
 
-	public void destroy() {
-		PersistedModelLocalServiceRegistryUtil.unregister(
-			"com.liferay.timesheet.model.TaskSession");
-	}
+        if (contextClassLoader != _classLoader) {
+            currentThread.setContextClassLoader(_classLoader);
+        }
 
-	/**
-	 * Returns the Spring bean ID for this bean.
-	 *
-	 * @return the Spring bean ID for this bean
-	 */
-	public String getBeanIdentifier() {
-		return _beanIdentifier;
-	}
+        try {
+            return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
+        } finally {
+            if (contextClassLoader != _classLoader) {
+                currentThread.setContextClassLoader(contextClassLoader);
+            }
+        }
+    }
 
-	/**
-	 * Sets the Spring bean ID for this bean.
-	 *
-	 * @param beanIdentifier the Spring bean ID for this bean
-	 */
-	public void setBeanIdentifier(String beanIdentifier) {
-		_beanIdentifier = beanIdentifier;
-	}
+    protected Class<?> getModelClass() {
+        return TaskSession.class;
+    }
 
-	public Object invokeMethod(String name, String[] parameterTypes,
-		Object[] arguments) throws Throwable {
-		Thread currentThread = Thread.currentThread();
+    protected String getModelClassName() {
+        return TaskSession.class.getName();
+    }
 
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+    /**
+     * Performs an SQL query.
+     *
+     * @param sql the sql query
+     */
+    protected void runSQL(String sql) throws SystemException {
+        try {
+            DataSource dataSource = taskSessionPersistence.getDataSource();
 
-		if (contextClassLoader != _classLoader) {
-			currentThread.setContextClassLoader(_classLoader);
-		}
+            SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
+                    sql, new int[0]);
 
-		try {
-			return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
-		}
-		finally {
-			if (contextClassLoader != _classLoader) {
-				currentThread.setContextClassLoader(contextClassLoader);
-			}
-		}
-	}
-
-	protected Class<?> getModelClass() {
-		return TaskSession.class;
-	}
-
-	protected String getModelClassName() {
-		return TaskSession.class.getName();
-	}
-
-	/**
-	 * Performs an SQL query.
-	 *
-	 * @param sql the sql query
-	 */
-	protected void runSQL(String sql) throws SystemException {
-		try {
-			DataSource dataSource = taskSessionPersistence.getDataSource();
-
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql, new int[0]);
-
-			sqlUpdate.update();
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-	}
-
-	@BeanReference(type = TaskLocalService.class)
-	protected TaskLocalService taskLocalService;
-	@BeanReference(type = TaskService.class)
-	protected TaskService taskService;
-	@BeanReference(type = TaskPersistence.class)
-	protected TaskPersistence taskPersistence;
-	@BeanReference(type = TaskSessionLocalService.class)
-	protected TaskSessionLocalService taskSessionLocalService;
-	@BeanReference(type = TaskSessionService.class)
-	protected TaskSessionService taskSessionService;
-	@BeanReference(type = TaskSessionPersistence.class)
-	protected TaskSessionPersistence taskSessionPersistence;
-	@BeanReference(type = TaskSessionFinder.class)
-	protected TaskSessionFinder taskSessionFinder;
-	@BeanReference(type = CounterLocalService.class)
-	protected CounterLocalService counterLocalService;
-	@BeanReference(type = ResourceLocalService.class)
-	protected ResourceLocalService resourceLocalService;
-	@BeanReference(type = ResourceService.class)
-	protected ResourceService resourceService;
-	@BeanReference(type = ResourcePersistence.class)
-	protected ResourcePersistence resourcePersistence;
-	@BeanReference(type = UserLocalService.class)
-	protected UserLocalService userLocalService;
-	@BeanReference(type = UserService.class)
-	protected UserService userService;
-	@BeanReference(type = UserPersistence.class)
-	protected UserPersistence userPersistence;
-	private String _beanIdentifier;
-	private ClassLoader _classLoader;
-	private TaskSessionLocalServiceClpInvoker _clpInvoker = new TaskSessionLocalServiceClpInvoker();
+            sqlUpdate.update();
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
+    }
 }

@@ -1,17 +1,3 @@
-/**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
-
 package com.liferay.timesheet.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,255 +22,245 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Brian Wing Shun Chan
- */
+
 public class ClpSerializer {
-	public static String getServletContextName() {
-		if (Validator.isNotNull(_servletContextName)) {
-			return _servletContextName;
-		}
+    private static Log _log = LogFactoryUtil.getLog(ClpSerializer.class);
+    private static String _servletContextName;
+    private static boolean _useReflectionToTranslateThrowable = true;
 
-		synchronized (ClpSerializer.class) {
-			if (Validator.isNotNull(_servletContextName)) {
-				return _servletContextName;
-			}
+    public static String getServletContextName() {
+        if (Validator.isNotNull(_servletContextName)) {
+            return _servletContextName;
+        }
 
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+        synchronized (ClpSerializer.class) {
+            if (Validator.isNotNull(_servletContextName)) {
+                return _servletContextName;
+            }
 
-				Class<?> portletPropsClass = classLoader.loadClass(
-						"com.liferay.util.portlet.PortletProps");
-
-				Method getMethod = portletPropsClass.getMethod("get",
-						new Class<?>[] { String.class });
-
-				String portletPropsServletContextName = (String)getMethod.invoke(null,
-						"timesheet-portlet-deployment-context");
-
-				if (Validator.isNotNull(portletPropsServletContextName)) {
-					_servletContextName = portletPropsServletContextName;
-				}
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
-						"Unable to locate deployment context from portlet properties");
-				}
-			}
-
-			if (Validator.isNull(_servletContextName)) {
-				try {
-					String propsUtilServletContextName = PropsUtil.get(
-							"timesheet-portlet-deployment-context");
-
-					if (Validator.isNotNull(propsUtilServletContextName)) {
-						_servletContextName = propsUtilServletContextName;
-					}
-				}
-				catch (Throwable t) {
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Unable to locate deployment context from portal properties");
-					}
-				}
-			}
+            try {
+                ClassLoader classLoader = ClpSerializer.class.getClassLoader();
 
-			if (Validator.isNull(_servletContextName)) {
-				_servletContextName = "timesheet-portlet";
-			}
-
-			return _servletContextName;
-		}
-	}
-
-	public static Object translateInput(BaseModel<?> oldModel) {
-		Class<?> oldModelClass = oldModel.getClass();
-
-		String oldModelClassName = oldModelClass.getName();
-
-		if (oldModelClassName.equals(TaskClp.class.getName())) {
-			return translateInputTask(oldModel);
-		}
-
-		if (oldModelClassName.equals(TaskSessionClp.class.getName())) {
-			return translateInputTaskSession(oldModel);
-		}
-
-		return oldModel;
-	}
-
-	public static Object translateInput(List<Object> oldList) {
-		List<Object> newList = new ArrayList<Object>(oldList.size());
+                Class<?> portletPropsClass = classLoader.loadClass(
+                        "com.liferay.util.portlet.PortletProps");
 
-		for (int i = 0; i < oldList.size(); i++) {
-			Object curObj = oldList.get(i);
+                Method getMethod = portletPropsClass.getMethod("get",
+                        new Class<?>[] { String.class });
 
-			newList.add(translateInput(curObj));
-		}
+                String portletPropsServletContextName = (String) getMethod.invoke(null,
+                        "timesheet-portlet-deployment-context");
 
-		return newList;
-	}
+                if (Validator.isNotNull(portletPropsServletContextName)) {
+                    _servletContextName = portletPropsServletContextName;
+                }
+            } catch (Throwable t) {
+                if (_log.isInfoEnabled()) {
+                    _log.info(
+                        "Unable to locate deployment context from portlet properties");
+                }
+            }
 
-	public static Object translateInputTask(BaseModel<?> oldModel) {
-		TaskClp oldClpModel = (TaskClp)oldModel;
+            if (Validator.isNull(_servletContextName)) {
+                try {
+                    String propsUtilServletContextName = PropsUtil.get(
+                            "timesheet-portlet-deployment-context");
 
-		BaseModel<?> newModel = oldClpModel.getTaskRemoteModel();
+                    if (Validator.isNotNull(propsUtilServletContextName)) {
+                        _servletContextName = propsUtilServletContextName;
+                    }
+                } catch (Throwable t) {
+                    if (_log.isInfoEnabled()) {
+                        _log.info(
+                            "Unable to locate deployment context from portal properties");
+                    }
+                }
+            }
 
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+            if (Validator.isNull(_servletContextName)) {
+                _servletContextName = "timesheet-portlet";
+            }
 
-		return newModel;
-	}
+            return _servletContextName;
+        }
+    }
 
-	public static Object translateInputTaskSession(BaseModel<?> oldModel) {
-		TaskSessionClp oldClpModel = (TaskSessionClp)oldModel;
+    public static Object translateInput(BaseModel<?> oldModel) {
+        Class<?> oldModelClass = oldModel.getClass();
+
+        String oldModelClassName = oldModelClass.getName();
 
-		BaseModel<?> newModel = oldClpModel.getTaskSessionRemoteModel();
+        if (oldModelClassName.equals(TaskClp.class.getName())) {
+            return translateInputTask(oldModel);
+        }
 
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+        if (oldModelClassName.equals(TaskSessionClp.class.getName())) {
+            return translateInputTaskSession(oldModel);
+        }
 
-		return newModel;
-	}
+        return oldModel;
+    }
 
-	public static Object translateInput(Object obj) {
-		if (obj instanceof BaseModel<?>) {
-			return translateInput((BaseModel<?>)obj);
-		}
-		else if (obj instanceof List<?>) {
-			return translateInput((List<Object>)obj);
-		}
-		else {
-			return obj;
-		}
-	}
+    public static Object translateInput(List<Object> oldList) {
+        List<Object> newList = new ArrayList<Object>(oldList.size());
 
-	public static Object translateOutput(BaseModel<?> oldModel) {
-		Class<?> oldModelClass = oldModel.getClass();
+        for (int i = 0; i < oldList.size(); i++) {
+            Object curObj = oldList.get(i);
 
-		String oldModelClassName = oldModelClass.getName();
+            newList.add(translateInput(curObj));
+        }
 
-		if (oldModelClassName.equals(
-					"com.liferay.timesheet.model.impl.TaskImpl")) {
-			return translateOutputTask(oldModel);
-		}
+        return newList;
+    }
 
-		if (oldModelClassName.equals(
-					"com.liferay.timesheet.model.impl.TaskSessionImpl")) {
-			return translateOutputTaskSession(oldModel);
-		}
+    public static Object translateInputTask(BaseModel<?> oldModel) {
+        TaskClp oldClpModel = (TaskClp) oldModel;
 
-		return oldModel;
-	}
+        BaseModel<?> newModel = oldClpModel.getTaskRemoteModel();
 
-	public static Object translateOutput(List<Object> oldList) {
-		List<Object> newList = new ArrayList<Object>(oldList.size());
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-		for (int i = 0; i < oldList.size(); i++) {
-			Object curObj = oldList.get(i);
+        return newModel;
+    }
 
-			newList.add(translateOutput(curObj));
-		}
+    public static Object translateInputTaskSession(BaseModel<?> oldModel) {
+        TaskSessionClp oldClpModel = (TaskSessionClp) oldModel;
 
-		return newList;
-	}
+        BaseModel<?> newModel = oldClpModel.getTaskSessionRemoteModel();
 
-	public static Object translateOutput(Object obj) {
-		if (obj instanceof BaseModel<?>) {
-			return translateOutput((BaseModel<?>)obj);
-		}
-		else if (obj instanceof List<?>) {
-			return translateOutput((List<Object>)obj);
-		}
-		else {
-			return obj;
-		}
-	}
+        newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
-	public static Throwable translateThrowable(Throwable throwable) {
-		if (_useReflectionToTranslateThrowable) {
-			try {
-				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream = new UnsyncByteArrayOutputStream();
-				ObjectOutputStream objectOutputStream = new ObjectOutputStream(unsyncByteArrayOutputStream);
+        return newModel;
+    }
 
-				objectOutputStream.writeObject(throwable);
+    public static Object translateInput(Object obj) {
+        if (obj instanceof BaseModel<?>) {
+            return translateInput((BaseModel<?>) obj);
+        } else if (obj instanceof List<?>) {
+            return translateInput((List<Object>) obj);
+        } else {
+            return obj;
+        }
+    }
 
-				objectOutputStream.flush();
-				objectOutputStream.close();
+    public static Object translateOutput(BaseModel<?> oldModel) {
+        Class<?> oldModelClass = oldModel.getClass();
 
-				UnsyncByteArrayInputStream unsyncByteArrayInputStream = new UnsyncByteArrayInputStream(unsyncByteArrayOutputStream.unsafeGetByteArray(),
-						0, unsyncByteArrayOutputStream.size());
+        String oldModelClassName = oldModelClass.getName();
 
-				Thread currentThread = Thread.currentThread();
+        if (oldModelClassName.equals(
+                    "com.liferay.timesheet.model.impl.TaskImpl")) {
+            return translateOutputTask(oldModel);
+        }
 
-				ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+        if (oldModelClassName.equals(
+                    "com.liferay.timesheet.model.impl.TaskSessionImpl")) {
+            return translateOutputTaskSession(oldModel);
+        }
 
-				ObjectInputStream objectInputStream = new ClassLoaderObjectInputStream(unsyncByteArrayInputStream,
-						contextClassLoader);
+        return oldModel;
+    }
 
-				throwable = (Throwable)objectInputStream.readObject();
+    public static Object translateOutput(List<Object> oldList) {
+        List<Object> newList = new ArrayList<Object>(oldList.size());
 
-				objectInputStream.close();
+        for (int i = 0; i < oldList.size(); i++) {
+            Object curObj = oldList.get(i);
 
-				return throwable;
-			}
-			catch (SecurityException se) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Do not use reflection to translate throwable");
-				}
+            newList.add(translateOutput(curObj));
+        }
 
-				_useReflectionToTranslateThrowable = false;
-			}
-			catch (Throwable throwable2) {
-				_log.error(throwable2, throwable2);
+        return newList;
+    }
 
-				return throwable2;
-			}
-		}
+    public static Object translateOutput(Object obj) {
+        if (obj instanceof BaseModel<?>) {
+            return translateOutput((BaseModel<?>) obj);
+        } else if (obj instanceof List<?>) {
+            return translateOutput((List<Object>) obj);
+        } else {
+            return obj;
+        }
+    }
 
-		Class<?> clazz = throwable.getClass();
+    public static Throwable translateThrowable(Throwable throwable) {
+        if (_useReflectionToTranslateThrowable) {
+            try {
+                UnsyncByteArrayOutputStream unsyncByteArrayOutputStream = new UnsyncByteArrayOutputStream();
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(unsyncByteArrayOutputStream);
 
-		String className = clazz.getName();
+                objectOutputStream.writeObject(throwable);
 
-		if (className.equals(PortalException.class.getName())) {
-			return new PortalException();
-		}
+                objectOutputStream.flush();
+                objectOutputStream.close();
 
-		if (className.equals(SystemException.class.getName())) {
-			return new SystemException();
-		}
+                UnsyncByteArrayInputStream unsyncByteArrayInputStream = new UnsyncByteArrayInputStream(unsyncByteArrayOutputStream.unsafeGetByteArray(),
+                        0, unsyncByteArrayOutputStream.size());
 
-		if (className.equals("com.liferay.timesheet.NoSuchTaskException")) {
-			return new com.liferay.timesheet.NoSuchTaskException();
-		}
+                Thread currentThread = Thread.currentThread();
 
-		if (className.equals("com.liferay.timesheet.NoSuchTaskSessionException")) {
-			return new com.liferay.timesheet.NoSuchTaskSessionException();
-		}
+                ClassLoader contextClassLoader = currentThread.getContextClassLoader();
 
-		return throwable;
-	}
+                ObjectInputStream objectInputStream = new ClassLoaderObjectInputStream(unsyncByteArrayInputStream,
+                        contextClassLoader);
 
-	public static Object translateOutputTask(BaseModel<?> oldModel) {
-		TaskClp newModel = new TaskClp();
+                throwable = (Throwable) objectInputStream.readObject();
 
-		newModel.setModelAttributes(oldModel.getModelAttributes());
+                objectInputStream.close();
 
-		newModel.setTaskRemoteModel(oldModel);
+                return throwable;
+            } catch (SecurityException se) {
+                if (_log.isInfoEnabled()) {
+                    _log.info("Do not use reflection to translate throwable");
+                }
 
-		return newModel;
-	}
+                _useReflectionToTranslateThrowable = false;
+            } catch (Throwable throwable2) {
+                _log.error(throwable2, throwable2);
 
-	public static Object translateOutputTaskSession(BaseModel<?> oldModel) {
-		TaskSessionClp newModel = new TaskSessionClp();
+                return throwable2;
+            }
+        }
 
-		newModel.setModelAttributes(oldModel.getModelAttributes());
+        Class<?> clazz = throwable.getClass();
 
-		newModel.setTaskSessionRemoteModel(oldModel);
+        String className = clazz.getName();
 
-		return newModel;
-	}
+        if (className.equals(PortalException.class.getName())) {
+            return new PortalException();
+        }
 
-	private static Log _log = LogFactoryUtil.getLog(ClpSerializer.class);
-	private static String _servletContextName;
-	private static boolean _useReflectionToTranslateThrowable = true;
+        if (className.equals(SystemException.class.getName())) {
+            return new SystemException();
+        }
+
+        if (className.equals("com.liferay.timesheet.NoSuchTaskException")) {
+            return new com.liferay.timesheet.NoSuchTaskException();
+        }
+
+        if (className.equals("com.liferay.timesheet.NoSuchTaskSessionException")) {
+            return new com.liferay.timesheet.NoSuchTaskSessionException();
+        }
+
+        return throwable;
+    }
+
+    public static Object translateOutputTask(BaseModel<?> oldModel) {
+        TaskClp newModel = new TaskClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setTaskRemoteModel(oldModel);
+
+        return newModel;
+    }
+
+    public static Object translateOutputTaskSession(BaseModel<?> oldModel) {
+        TaskSessionClp newModel = new TaskSessionClp();
+
+        newModel.setModelAttributes(oldModel.getModelAttributes());
+
+        newModel.setTaskSessionRemoteModel(oldModel);
+
+        return newModel;
+    }
 }

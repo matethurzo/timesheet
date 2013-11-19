@@ -6,7 +6,7 @@ create table timesheet_Task (
 
 create table timesheet_TaskSession (
 	taskSessionId LONG not null primary key,
-	taskId LONG,
+	endTime DATE null,
 	startTime DATE null,
-	endTime DATE null
+	taskId LONG
 );

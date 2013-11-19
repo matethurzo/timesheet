@@ -1,22 +1,7 @@
-/**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
-
 package com.liferay.timesheet.model.impl;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,15 +16,12 @@ import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.timesheet.model.Task;
 import com.liferay.timesheet.model.TaskModel;
-import com.liferay.timesheet.model.TaskSoap;
 
 import java.io.Serializable;
 
 import java.sql.Types;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,368 +37,316 @@ import java.util.Map;
  * @see com.liferay.timesheet.model.TaskModel
  * @generated
  */
-@JSON(strict = true)
 public class TaskModelImpl extends BaseModelImpl<Task> implements TaskModel {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a task model instance should use the {@link com.liferay.timesheet.model.Task} interface instead.
-	 */
-	public static final String TABLE_NAME = "timesheet_Task";
-	public static final Object[][] TABLE_COLUMNS = {
-			{ "taskId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "taskName", Types.VARCHAR }
-		};
-	public static final String TABLE_SQL_CREATE = "create table timesheet_Task (taskId LONG not null primary key,userId LONG,taskName VARCHAR(75) null)";
-	public static final String TABLE_SQL_DROP = "drop table timesheet_Task";
-	public static final String DATA_SOURCE = "liferayDataSource";
-	public static final String SESSION_FACTORY = "liferaySessionFactory";
-	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.timesheet.model.Task"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.timesheet.model.Task"),
-			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-				"value.object.column.bitmask.enabled.com.liferay.timesheet.model.Task"),
-			true);
-	public static long TASKNAME_COLUMN_BITMASK = 1L;
-	public static long USERID_COLUMN_BITMASK = 2L;
-
-	/**
-	 * Converts the soap model instance into a normal model instance.
-	 *
-	 * @param soapModel the soap model instance to convert
-	 * @return the normal model instance
-	 */
-	public static Task toModel(TaskSoap soapModel) {
-		if (soapModel == null) {
-			return null;
-		}
-
-		Task model = new TaskImpl();
-
-		model.setTaskId(soapModel.getTaskId());
-		model.setUserId(soapModel.getUserId());
-		model.setTaskName(soapModel.getTaskName());
-
-		return model;
-	}
-
-	/**
-	 * Converts the soap model instances into normal model instances.
-	 *
-	 * @param soapModels the soap model instances to convert
-	 * @return the normal model instances
-	 */
-	public static List<Task> toModels(TaskSoap[] soapModels) {
-		if (soapModels == null) {
-			return null;
-		}
-
-		List<Task> models = new ArrayList<Task>(soapModels.length);
-
-		for (TaskSoap soapModel : soapModels) {
-			models.add(toModel(soapModel));
-		}
-
-		return models;
-	}
-
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
-				"lock.expiration.time.com.liferay.timesheet.model.Task"));
-
-	public TaskModelImpl() {
-	}
-
-	public long getPrimaryKey() {
-		return _taskId;
-	}
-
-	public void setPrimaryKey(long primaryKey) {
-		setTaskId(primaryKey);
-	}
-
-	public Serializable getPrimaryKeyObj() {
-		return new Long(_taskId);
-	}
-
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey(((Long)primaryKeyObj).longValue());
-	}
-
-	public Class<?> getModelClass() {
-		return Task.class;
-	}
-
-	public String getModelClassName() {
-		return Task.class.getName();
-	}
-
-	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-
-		attributes.put("taskId", getTaskId());
-		attributes.put("userId", getUserId());
-		attributes.put("taskName", getTaskName());
-
-		return attributes;
-	}
+    /*
+     * NOTE FOR DEVELOPERS:
+     *
+     * Never modify or reference this class directly. All methods that expect a task model instance should use the {@link com.liferay.timesheet.model.Task} interface instead.
+     */
+    public static final String TABLE_NAME = "timesheet_Task";
+    public static final Object[][] TABLE_COLUMNS = {
+            { "taskId", Types.BIGINT },
+            { "userId", Types.BIGINT },
+            { "taskName", Types.VARCHAR }
+        };
+    public static final String TABLE_SQL_CREATE = "create table timesheet_Task (taskId LONG not null primary key,userId LONG,taskName VARCHAR(75) null)";
+    public static final String TABLE_SQL_DROP = "drop table timesheet_Task";
+    public static final String DATA_SOURCE = "liferayDataSource";
+    public static final String SESSION_FACTORY = "liferaySessionFactory";
+    public static final String TX_MANAGER = "liferayTransactionManager";
+    public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.entity.cache.enabled.com.liferay.timesheet.model.Task"),
+            true);
+    public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.finder.cache.enabled.com.liferay.timesheet.model.Task"),
+            true);
+    public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+                "value.object.column.bitmask.enabled.com.liferay.timesheet.model.Task"),
+            true);
+    public static long TASKNAME_COLUMN_BITMASK = 1L;
+    public static long USERID_COLUMN_BITMASK = 2L;
+    public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
+                "lock.expiration.time.com.liferay.timesheet.model.Task"));
+    private static ClassLoader _classLoader = Task.class.getClassLoader();
+    private static Class<?>[] _escapedModelInterfaces = new Class[] { Task.class };
+    private long _taskId;
+    private long _userId;
+    private String _userUuid;
+    private long _originalUserId;
+    private boolean _setOriginalUserId;
+    private String _taskName;
+    private String _originalTaskName;
+    private long _columnBitmask;
+    private Task _escapedModel;
+
+    public TaskModelImpl() {
+    }
+
+    public long getPrimaryKey() {
+        return _taskId;
+    }
+
+    public void setPrimaryKey(long primaryKey) {
+        setTaskId(primaryKey);
+    }
+
+    public Serializable getPrimaryKeyObj() {
+        return new Long(_taskId);
+    }
+
+    public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+        setPrimaryKey(((Long) primaryKeyObj).longValue());
+    }
+
+    public Class<?> getModelClass() {
+        return Task.class;
+    }
+
+    public String getModelClassName() {
+        return Task.class.getName();
+    }
+
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
+
+        attributes.put("taskId", getTaskId());
+        attributes.put("userId", getUserId());
+        attributes.put("taskName", getTaskName());
+
+        return attributes;
+    }
+
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long taskId = (Long) attributes.get("taskId");
+
+        if (taskId != null) {
+            setTaskId(taskId);
+        }
+
+        Long userId = (Long) attributes.get("userId");
+
+        if (userId != null) {
+            setUserId(userId);
+        }
+
+        String taskName = (String) attributes.get("taskName");
+
+        if (taskName != null) {
+            setTaskName(taskName);
+        }
+    }
+
+    public long getTaskId() {
+        return _taskId;
+    }
 
-	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long taskId = (Long)attributes.get("taskId");
+    public void setTaskId(long taskId) {
+        _taskId = taskId;
+    }
 
-		if (taskId != null) {
-			setTaskId(taskId);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
-		String taskName = (String)attributes.get("taskName");
+    public long getUserId() {
+        return _userId;
+    }
+
+    public void setUserId(long userId) {
+        _columnBitmask |= USERID_COLUMN_BITMASK;
+
+        if (!_setOriginalUserId) {
+            _setOriginalUserId = true;
+
+            _originalUserId = _userId;
+        }
+
+        _userId = userId;
+    }
+
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
+
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
+
+    public long getOriginalUserId() {
+        return _originalUserId;
+    }
+
+    public String getTaskName() {
+        if (_taskName == null) {
+            return StringPool.BLANK;
+        } else {
+            return _taskName;
+        }
+    }
+
+    public void setTaskName(String taskName) {
+        _columnBitmask |= TASKNAME_COLUMN_BITMASK;
+
+        if (_originalTaskName == null) {
+            _originalTaskName = _taskName;
+        }
 
-		if (taskName != null) {
-			setTaskName(taskName);
-		}
-	}
-
-	@JSON
-	public long getTaskId() {
-		return _taskId;
-	}
+        _taskName = taskName;
+    }
 
-	public void setTaskId(long taskId) {
-		_taskId = taskId;
-	}
+    public String getOriginalTaskName() {
+        return GetterUtil.getString(_originalTaskName);
+    }
 
-	@JSON
-	public long getUserId() {
-		return _userId;
-	}
-
-	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
-
-		_userId = userId;
-	}
-
-	public String getUserUuid() throws SystemException {
-		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
-	}
-
-	public void setUserUuid(String userUuid) {
-		_userUuid = userUuid;
-	}
-
-	public long getOriginalUserId() {
-		return _originalUserId;
-	}
-
-	@JSON
-	public String getTaskName() {
-		if (_taskName == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _taskName;
-		}
-	}
-
-	public void setTaskName(String taskName) {
-		_columnBitmask |= TASKNAME_COLUMN_BITMASK;
-
-		if (_originalTaskName == null) {
-			_originalTaskName = _taskName;
-		}
-
-		_taskName = taskName;
-	}
-
-	public String getOriginalTaskName() {
-		return GetterUtil.getString(_originalTaskName);
-	}
-
-	public long getColumnBitmask() {
-		return _columnBitmask;
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-			Task.class.getName(), getPrimaryKey());
-	}
+    public long getColumnBitmask() {
+        return _columnBitmask;
+    }
 
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		ExpandoBridge expandoBridge = getExpandoBridge();
+    @Override
+    public ExpandoBridge getExpandoBridge() {
+        return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+            Task.class.getName(), getPrimaryKey());
+    }
 
-		expandoBridge.setAttributes(serviceContext);
-	}
+    @Override
+    public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+        ExpandoBridge expandoBridge = getExpandoBridge();
 
-	@Override
-	public Task toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Task)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
-		}
+        expandoBridge.setAttributes(serviceContext);
+    }
 
-		return _escapedModelProxy;
-	}
+    @Override
+    public Task toEscapedModel() {
+        if (_escapedModel == null) {
+            _escapedModel = (Task) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+        }
 
-	@Override
-	public Object clone() {
-		TaskImpl taskImpl = new TaskImpl();
+        return _escapedModel;
+    }
 
-		taskImpl.setTaskId(getTaskId());
-		taskImpl.setUserId(getUserId());
-		taskImpl.setTaskName(getTaskName());
+    public Task toUnescapedModel() {
+        return (Task) this;
+    }
 
-		taskImpl.resetOriginalValues();
+    @Override
+    public Object clone() {
+        TaskImpl taskImpl = new TaskImpl();
 
-		return taskImpl;
-	}
+        taskImpl.setTaskId(getTaskId());
+        taskImpl.setUserId(getUserId());
+        taskImpl.setTaskName(getTaskName());
 
-	public int compareTo(Task task) {
-		long primaryKey = task.getPrimaryKey();
+        taskImpl.resetOriginalValues();
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
-		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-
-		Task task = null;
-
-		try {
-			task = (Task)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
-
-		long primaryKey = task.getPrimaryKey();
-
-		if (getPrimaryKey() == primaryKey) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return (int)getPrimaryKey();
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		TaskModelImpl taskModelImpl = this;
-
-		taskModelImpl._originalUserId = taskModelImpl._userId;
-
-		taskModelImpl._setOriginalUserId = false;
-
-		taskModelImpl._originalTaskName = taskModelImpl._taskName;
-
-		taskModelImpl._columnBitmask = 0;
-	}
-
-	@Override
-	public CacheModel<Task> toCacheModel() {
-		TaskCacheModel taskCacheModel = new TaskCacheModel();
-
-		taskCacheModel.taskId = getTaskId();
-
-		taskCacheModel.userId = getUserId();
-
-		taskCacheModel.taskName = getTaskName();
-
-		String taskName = taskCacheModel.taskName;
-
-		if ((taskName != null) && (taskName.length() == 0)) {
-			taskCacheModel.taskName = null;
-		}
-
-		return taskCacheModel;
-	}
-
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(7);
-
-		sb.append("{taskId=");
-		sb.append(getTaskId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", taskName=");
-		sb.append(getTaskName());
-		sb.append("}");
-
-		return sb.toString();
-	}
-
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(13);
-
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.timesheet.model.Task");
-		sb.append("</model-name>");
-
-		sb.append(
-			"<column><column-name>taskId</column-name><column-value><![CDATA[");
-		sb.append(getTaskId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>taskName</column-name><column-value><![CDATA[");
-		sb.append(getTaskName());
-		sb.append("]]></column-value></column>");
-
-		sb.append("</model>");
-
-		return sb.toString();
-	}
-
-	private static ClassLoader _classLoader = Task.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			Task.class
-		};
-	private long _taskId;
-	private long _userId;
-	private String _userUuid;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
-	private String _taskName;
-	private String _originalTaskName;
-	private long _columnBitmask;
-	private Task _escapedModelProxy;
+        return taskImpl;
+    }
+
+    public int compareTo(Task task) {
+        long primaryKey = task.getPrimaryKey();
+
+        if (getPrimaryKey() < primaryKey) {
+            return -1;
+        } else if (getPrimaryKey() > primaryKey) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Task)) {
+            return false;
+        }
+
+        Task task = (Task) obj;
+
+        long primaryKey = task.getPrimaryKey();
+
+        if (getPrimaryKey() == primaryKey) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) getPrimaryKey();
+    }
+
+    @Override
+    public void resetOriginalValues() {
+        TaskModelImpl taskModelImpl = this;
+
+        taskModelImpl._originalUserId = taskModelImpl._userId;
+
+        taskModelImpl._setOriginalUserId = false;
+
+        taskModelImpl._originalTaskName = taskModelImpl._taskName;
+
+        taskModelImpl._columnBitmask = 0;
+    }
+
+    @Override
+    public CacheModel<Task> toCacheModel() {
+        TaskCacheModel taskCacheModel = new TaskCacheModel();
+
+        taskCacheModel.taskId = getTaskId();
+
+        taskCacheModel.userId = getUserId();
+
+        taskCacheModel.taskName = getTaskName();
+
+        String taskName = taskCacheModel.taskName;
+
+        if ((taskName != null) && (taskName.length() == 0)) {
+            taskCacheModel.taskName = null;
+        }
+
+        return taskCacheModel;
+    }
+
+    @Override
+    public String toString() {
+        StringBundler sb = new StringBundler(7);
+
+        sb.append("{taskId=");
+        sb.append(getTaskId());
+        sb.append(", userId=");
+        sb.append(getUserId());
+        sb.append(", taskName=");
+        sb.append(getTaskName());
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    public String toXmlString() {
+        StringBundler sb = new StringBundler(13);
+
+        sb.append("<model><model-name>");
+        sb.append("com.liferay.timesheet.model.Task");
+        sb.append("</model-name>");
+
+        sb.append(
+            "<column><column-name>taskId</column-name><column-value><![CDATA[");
+        sb.append(getTaskId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>userId</column-name><column-value><![CDATA[");
+        sb.append(getUserId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>taskName</column-name><column-value><![CDATA[");
+        sb.append(getTaskName());
+        sb.append("]]></column-value></column>");
+
+        sb.append("</model>");
+
+        return sb.toString();
+    }
 }

@@ -1,19 +1,6 @@
-/**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
-
 package com.liferay.timesheet.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
 import java.util.Date;
@@ -30,241 +17,256 @@ import java.util.Map;
  * @generated
  */
 public class TaskSessionWrapper implements TaskSession,
-	ModelWrapper<TaskSession> {
-	public TaskSessionWrapper(TaskSession taskSession) {
-		_taskSession = taskSession;
-	}
+    ModelWrapper<TaskSession> {
+    private TaskSession _taskSession;
 
-	public Class<?> getModelClass() {
-		return TaskSession.class;
-	}
+    public TaskSessionWrapper(TaskSession taskSession) {
+        _taskSession = taskSession;
+    }
 
-	public String getModelClassName() {
-		return TaskSession.class.getName();
-	}
+    public Class<?> getModelClass() {
+        return TaskSession.class;
+    }
 
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
+    public String getModelClassName() {
+        return TaskSession.class.getName();
+    }
 
-		attributes.put("taskSessionId", getTaskSessionId());
-		attributes.put("taskId", getTaskId());
-		attributes.put("startTime", getStartTime());
-		attributes.put("endTime", getEndTime());
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
 
-		return attributes;
-	}
+        attributes.put("taskSessionId", getTaskSessionId());
+        attributes.put("endTime", getEndTime());
+        attributes.put("startTime", getStartTime());
+        attributes.put("taskId", getTaskId());
 
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long taskSessionId = (Long)attributes.get("taskSessionId");
+        return attributes;
+    }
 
-		if (taskSessionId != null) {
-			setTaskSessionId(taskSessionId);
-		}
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long taskSessionId = (Long) attributes.get("taskSessionId");
 
-		Long taskId = (Long)attributes.get("taskId");
+        if (taskSessionId != null) {
+            setTaskSessionId(taskSessionId);
+        }
 
-		if (taskId != null) {
-			setTaskId(taskId);
-		}
+        Date endTime = (Date) attributes.get("endTime");
 
-		Date startTime = (Date)attributes.get("startTime");
+        if (endTime != null) {
+            setEndTime(endTime);
+        }
 
-		if (startTime != null) {
-			setStartTime(startTime);
-		}
+        Date startTime = (Date) attributes.get("startTime");
 
-		Date endTime = (Date)attributes.get("endTime");
+        if (startTime != null) {
+            setStartTime(startTime);
+        }
 
-		if (endTime != null) {
-			setEndTime(endTime);
-		}
-	}
+        Long taskId = (Long) attributes.get("taskId");
 
-	/**
-	* Returns the primary key of this task session.
-	*
-	* @return the primary key of this task session
-	*/
-	public long getPrimaryKey() {
-		return _taskSession.getPrimaryKey();
-	}
+        if (taskId != null) {
+            setTaskId(taskId);
+        }
+    }
 
-	/**
-	* Sets the primary key of this task session.
-	*
-	* @param primaryKey the primary key of this task session
-	*/
-	public void setPrimaryKey(long primaryKey) {
-		_taskSession.setPrimaryKey(primaryKey);
-	}
+    /**
+    * Returns the primary key of this task session.
+    *
+    * @return the primary key of this task session
+    */
+    public long getPrimaryKey() {
+        return _taskSession.getPrimaryKey();
+    }
 
-	/**
-	* Returns the task session ID of this task session.
-	*
-	* @return the task session ID of this task session
-	*/
-	public long getTaskSessionId() {
-		return _taskSession.getTaskSessionId();
-	}
+    /**
+    * Sets the primary key of this task session.
+    *
+    * @param primaryKey the primary key of this task session
+    */
+    public void setPrimaryKey(long primaryKey) {
+        _taskSession.setPrimaryKey(primaryKey);
+    }
 
-	/**
-	* Sets the task session ID of this task session.
-	*
-	* @param taskSessionId the task session ID of this task session
-	*/
-	public void setTaskSessionId(long taskSessionId) {
-		_taskSession.setTaskSessionId(taskSessionId);
-	}
+    /**
+    * Returns the task session ID of this task session.
+    *
+    * @return the task session ID of this task session
+    */
+    public long getTaskSessionId() {
+        return _taskSession.getTaskSessionId();
+    }
 
-	/**
-	* Returns the task ID of this task session.
-	*
-	* @return the task ID of this task session
-	*/
-	public long getTaskId() {
-		return _taskSession.getTaskId();
-	}
+    /**
+    * Sets the task session ID of this task session.
+    *
+    * @param taskSessionId the task session ID of this task session
+    */
+    public void setTaskSessionId(long taskSessionId) {
+        _taskSession.setTaskSessionId(taskSessionId);
+    }
 
-	/**
-	* Sets the task ID of this task session.
-	*
-	* @param taskId the task ID of this task session
-	*/
-	public void setTaskId(long taskId) {
-		_taskSession.setTaskId(taskId);
-	}
+    /**
+    * Returns the end time of this task session.
+    *
+    * @return the end time of this task session
+    */
+    public java.util.Date getEndTime() {
+        return _taskSession.getEndTime();
+    }
 
-	/**
-	* Returns the start time of this task session.
-	*
-	* @return the start time of this task session
-	*/
-	public java.util.Date getStartTime() {
-		return _taskSession.getStartTime();
-	}
+    /**
+    * Sets the end time of this task session.
+    *
+    * @param endTime the end time of this task session
+    */
+    public void setEndTime(java.util.Date endTime) {
+        _taskSession.setEndTime(endTime);
+    }
 
-	/**
-	* Sets the start time of this task session.
-	*
-	* @param startTime the start time of this task session
-	*/
-	public void setStartTime(java.util.Date startTime) {
-		_taskSession.setStartTime(startTime);
-	}
+    /**
+    * Returns the start time of this task session.
+    *
+    * @return the start time of this task session
+    */
+    public java.util.Date getStartTime() {
+        return _taskSession.getStartTime();
+    }
 
-	/**
-	* Returns the end time of this task session.
-	*
-	* @return the end time of this task session
-	*/
-	public java.util.Date getEndTime() {
-		return _taskSession.getEndTime();
-	}
+    /**
+    * Sets the start time of this task session.
+    *
+    * @param startTime the start time of this task session
+    */
+    public void setStartTime(java.util.Date startTime) {
+        _taskSession.setStartTime(startTime);
+    }
 
-	/**
-	* Sets the end time of this task session.
-	*
-	* @param endTime the end time of this task session
-	*/
-	public void setEndTime(java.util.Date endTime) {
-		_taskSession.setEndTime(endTime);
-	}
+    /**
+    * Returns the task ID of this task session.
+    *
+    * @return the task ID of this task session
+    */
+    public long getTaskId() {
+        return _taskSession.getTaskId();
+    }
 
-	public boolean isNew() {
-		return _taskSession.isNew();
-	}
+    /**
+    * Sets the task ID of this task session.
+    *
+    * @param taskId the task ID of this task session
+    */
+    public void setTaskId(long taskId) {
+        _taskSession.setTaskId(taskId);
+    }
 
-	public void setNew(boolean n) {
-		_taskSession.setNew(n);
-	}
+    public boolean isNew() {
+        return _taskSession.isNew();
+    }
 
-	public boolean isCachedModel() {
-		return _taskSession.isCachedModel();
-	}
+    public void setNew(boolean n) {
+        _taskSession.setNew(n);
+    }
 
-	public void setCachedModel(boolean cachedModel) {
-		_taskSession.setCachedModel(cachedModel);
-	}
+    public boolean isCachedModel() {
+        return _taskSession.isCachedModel();
+    }
 
-	public boolean isEscapedModel() {
-		return _taskSession.isEscapedModel();
-	}
+    public void setCachedModel(boolean cachedModel) {
+        _taskSession.setCachedModel(cachedModel);
+    }
 
-	public java.io.Serializable getPrimaryKeyObj() {
-		return _taskSession.getPrimaryKeyObj();
-	}
+    public boolean isEscapedModel() {
+        return _taskSession.isEscapedModel();
+    }
 
-	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
-		_taskSession.setPrimaryKeyObj(primaryKeyObj);
-	}
+    public java.io.Serializable getPrimaryKeyObj() {
+        return _taskSession.getPrimaryKeyObj();
+    }
 
-	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
-		return _taskSession.getExpandoBridge();
-	}
+    public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
+        _taskSession.setPrimaryKeyObj(primaryKeyObj);
+    }
 
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.service.ServiceContext serviceContext) {
-		_taskSession.setExpandoBridgeAttributes(serviceContext);
-	}
+    public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
+        return _taskSession.getExpandoBridge();
+    }
 
-	@Override
-	public java.lang.Object clone() {
-		return new TaskSessionWrapper((TaskSession)_taskSession.clone());
-	}
+    public void setExpandoBridgeAttributes(
+        com.liferay.portal.service.ServiceContext serviceContext) {
+        _taskSession.setExpandoBridgeAttributes(serviceContext);
+    }
 
-	public int compareTo(com.liferay.timesheet.model.TaskSession taskSession) {
-		return _taskSession.compareTo(taskSession);
-	}
+    @Override
+    public java.lang.Object clone() {
+        return new TaskSessionWrapper((TaskSession) _taskSession.clone());
+    }
 
-	@Override
-	public int hashCode() {
-		return _taskSession.hashCode();
-	}
+    public int compareTo(com.liferay.timesheet.model.TaskSession taskSession) {
+        return _taskSession.compareTo(taskSession);
+    }
 
-	public com.liferay.portal.model.CacheModel<com.liferay.timesheet.model.TaskSession> toCacheModel() {
-		return _taskSession.toCacheModel();
-	}
+    @Override
+    public int hashCode() {
+        return _taskSession.hashCode();
+    }
 
-	public com.liferay.timesheet.model.TaskSession toEscapedModel() {
-		return new TaskSessionWrapper(_taskSession.toEscapedModel());
-	}
+    public com.liferay.portal.model.CacheModel<com.liferay.timesheet.model.TaskSession> toCacheModel() {
+        return _taskSession.toCacheModel();
+    }
 
-	@Override
-	public java.lang.String toString() {
-		return _taskSession.toString();
-	}
+    public com.liferay.timesheet.model.TaskSession toEscapedModel() {
+        return new TaskSessionWrapper(_taskSession.toEscapedModel());
+    }
 
-	public java.lang.String toXmlString() {
-		return _taskSession.toXmlString();
-	}
+    public com.liferay.timesheet.model.TaskSession toUnescapedModel() {
+        return new TaskSessionWrapper(_taskSession.toUnescapedModel());
+    }
 
-	public void persist()
-		throws com.liferay.portal.kernel.exception.SystemException {
-		_taskSession.persist();
-	}
+    @Override
+    public java.lang.String toString() {
+        return _taskSession.toString();
+    }
 
-	public java.lang.String getTaskName() {
-		return _taskSession.getTaskName();
-	}
+    public java.lang.String toXmlString() {
+        return _taskSession.toXmlString();
+    }
 
-	public void setTaskName(java.lang.String taskName) {
-		_taskSession.setTaskName(taskName);
-	}
+    public void persist()
+        throws com.liferay.portal.kernel.exception.SystemException {
+        _taskSession.persist();
+    }
 
-	/**
-	 * @deprecated Renamed to {@link #getWrappedModel}
-	 */
-	public TaskSession getWrappedTaskSession() {
-		return _taskSession;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-	public TaskSession getWrappedModel() {
-		return _taskSession;
-	}
+        if (!(obj instanceof TaskSessionWrapper)) {
+            return false;
+        }
 
-	public void resetOriginalValues() {
-		_taskSession.resetOriginalValues();
-	}
+        TaskSessionWrapper taskSessionWrapper = (TaskSessionWrapper) obj;
 
-	private TaskSession _taskSession;
+        if (Validator.equals(_taskSession, taskSessionWrapper._taskSession)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @deprecated Renamed to {@link #getWrappedModel}
+     */
+    public TaskSession getWrappedTaskSession() {
+        return _taskSession;
+    }
+
+    public TaskSession getWrappedModel() {
+        return _taskSession;
+    }
+
+    public void resetOriginalValues() {
+        _taskSession.resetOriginalValues();
+    }
 }

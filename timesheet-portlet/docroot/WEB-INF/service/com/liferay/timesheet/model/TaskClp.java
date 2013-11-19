@@ -1,251 +1,310 @@
-/**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
-
 package com.liferay.timesheet.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.util.PortalUtil;
 
+import com.liferay.timesheet.service.ClpSerializer;
 import com.liferay.timesheet.service.TaskLocalServiceUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Istvan Sajtos
- */
+
 public class TaskClp extends BaseModelImpl<Task> implements Task {
-	public TaskClp() {
-	}
+    private long _taskId;
+    private long _userId;
+    private String _userUuid;
+    private String _taskName;
+    private BaseModel<?> _taskRemoteModel;
 
-	public Class<?> getModelClass() {
-		return Task.class;
-	}
+    public TaskClp() {
+    }
 
-	public String getModelClassName() {
-		return Task.class.getName();
-	}
+    public Class<?> getModelClass() {
+        return Task.class;
+    }
 
-	public long getPrimaryKey() {
-		return _taskId;
-	}
+    public String getModelClassName() {
+        return Task.class.getName();
+    }
 
-	public void setPrimaryKey(long primaryKey) {
-		setTaskId(primaryKey);
-	}
+    public long getPrimaryKey() {
+        return _taskId;
+    }
 
-	public Serializable getPrimaryKeyObj() {
-		return new Long(_taskId);
-	}
+    public void setPrimaryKey(long primaryKey) {
+        setTaskId(primaryKey);
+    }
 
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey(((Long)primaryKeyObj).longValue());
-	}
+    public Serializable getPrimaryKeyObj() {
+        return new Long(_taskId);
+    }
 
-	@Override
-	public Map<String, Object> getModelAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
+    public void setPrimaryKeyObj(Serializable primaryKeyObj) {
+        setPrimaryKey(((Long) primaryKeyObj).longValue());
+    }
 
-		attributes.put("taskId", getTaskId());
-		attributes.put("userId", getUserId());
-		attributes.put("taskName", getTaskName());
+    @Override
+    public Map<String, Object> getModelAttributes() {
+        Map<String, Object> attributes = new HashMap<String, Object>();
 
-		return attributes;
-	}
+        attributes.put("taskId", getTaskId());
+        attributes.put("userId", getUserId());
+        attributes.put("taskName", getTaskName());
 
-	@Override
-	public void setModelAttributes(Map<String, Object> attributes) {
-		Long taskId = (Long)attributes.get("taskId");
+        return attributes;
+    }
 
-		if (taskId != null) {
-			setTaskId(taskId);
-		}
+    @Override
+    public void setModelAttributes(Map<String, Object> attributes) {
+        Long taskId = (Long) attributes.get("taskId");
 
-		Long userId = (Long)attributes.get("userId");
+        if (taskId != null) {
+            setTaskId(taskId);
+        }
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+        Long userId = (Long) attributes.get("userId");
 
-		String taskName = (String)attributes.get("taskName");
+        if (userId != null) {
+            setUserId(userId);
+        }
 
-		if (taskName != null) {
-			setTaskName(taskName);
-		}
-	}
+        String taskName = (String) attributes.get("taskName");
 
-	public long getTaskId() {
-		return _taskId;
-	}
+        if (taskName != null) {
+            setTaskName(taskName);
+        }
+    }
 
-	public void setTaskId(long taskId) {
-		_taskId = taskId;
-	}
+    public long getTaskId() {
+        return _taskId;
+    }
 
-	public long getUserId() {
-		return _userId;
-	}
+    public void setTaskId(long taskId) {
+        _taskId = taskId;
 
-	public void setUserId(long userId) {
-		_userId = userId;
-	}
+        if (_taskRemoteModel != null) {
+            try {
+                Class<?> clazz = _taskRemoteModel.getClass();
 
-	public String getUserUuid() throws SystemException {
-		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
-	}
+                Method method = clazz.getMethod("setTaskId", long.class);
 
-	public void setUserUuid(String userUuid) {
-		_userUuid = userUuid;
-	}
+                method.invoke(_taskRemoteModel, taskId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
 
-	public String getTaskName() {
-		return _taskName;
-	}
+    public long getUserId() {
+        return _userId;
+    }
 
-	public void setTaskName(String taskName) {
-		_taskName = taskName;
-	}
+    public void setUserId(long userId) {
+        _userId = userId;
 
-	public BaseModel<?> getTaskRemoteModel() {
-		return _taskRemoteModel;
-	}
+        if (_taskRemoteModel != null) {
+            try {
+                Class<?> clazz = _taskRemoteModel.getClass();
 
-	public void setTaskRemoteModel(BaseModel<?> taskRemoteModel) {
-		_taskRemoteModel = taskRemoteModel;
-	}
+                Method method = clazz.getMethod("setUserId", long.class);
 
-	public void persist() throws SystemException {
-		if (this.isNew()) {
-			TaskLocalServiceUtil.addTask(this);
-		}
-		else {
-			TaskLocalServiceUtil.updateTask(this);
-		}
-	}
+                method.invoke(_taskRemoteModel, userId);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
 
-	@Override
-	public Task toEscapedModel() {
-		return (Task)Proxy.newProxyInstance(Task.class.getClassLoader(),
-			new Class[] { Task.class }, new AutoEscapeBeanHandler(this));
-	}
+    public String getUserUuid() throws SystemException {
+        return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
+    }
 
-	@Override
-	public Object clone() {
-		TaskClp clone = new TaskClp();
+    public void setUserUuid(String userUuid) {
+        _userUuid = userUuid;
+    }
 
-		clone.setTaskId(getTaskId());
-		clone.setUserId(getUserId());
-		clone.setTaskName(getTaskName());
+    public String getTaskName() {
+        return _taskName;
+    }
 
-		return clone;
-	}
+    public void setTaskName(String taskName) {
+        _taskName = taskName;
 
-	public int compareTo(Task task) {
-		long primaryKey = task.getPrimaryKey();
+        if (_taskRemoteModel != null) {
+            try {
+                Class<?> clazz = _taskRemoteModel.getClass();
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
-		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
-	}
+                Method method = clazz.getMethod("setTaskName", String.class);
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
+                method.invoke(_taskRemoteModel, taskName);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException(e);
+            }
+        }
+    }
 
-		TaskClp task = null;
+    public BaseModel<?> getTaskRemoteModel() {
+        return _taskRemoteModel;
+    }
 
-		try {
-			task = (TaskClp)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
+    public void setTaskRemoteModel(BaseModel<?> taskRemoteModel) {
+        _taskRemoteModel = taskRemoteModel;
+    }
 
-		long primaryKey = task.getPrimaryKey();
+    public Object invokeOnRemoteModel(String methodName,
+        Class<?>[] parameterTypes, Object[] parameterValues)
+        throws Exception {
+        Object[] remoteParameterValues = new Object[parameterValues.length];
 
-		if (getPrimaryKey() == primaryKey) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+        for (int i = 0; i < parameterValues.length; i++) {
+            if (parameterValues[i] != null) {
+                remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+            }
+        }
 
-	@Override
-	public int hashCode() {
-		return (int)getPrimaryKey();
-	}
+        Class<?> remoteModelClass = _taskRemoteModel.getClass();
 
-	@Override
-	public String toString() {
-		StringBundler sb = new StringBundler(7);
+        ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
 
-		sb.append("{taskId=");
-		sb.append(getTaskId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", taskName=");
-		sb.append(getTaskName());
-		sb.append("}");
+        Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
 
-		return sb.toString();
-	}
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].isPrimitive()) {
+                remoteParameterTypes[i] = parameterTypes[i];
+            } else {
+                String parameterTypeName = parameterTypes[i].getName();
 
-	public String toXmlString() {
-		StringBundler sb = new StringBundler(13);
+                remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+            }
+        }
 
-		sb.append("<model><model-name>");
-		sb.append("com.liferay.timesheet.model.Task");
-		sb.append("</model-name>");
+        Method method = remoteModelClass.getMethod(methodName,
+                remoteParameterTypes);
 
-		sb.append(
-			"<column><column-name>taskId</column-name><column-value><![CDATA[");
-		sb.append(getTaskId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>taskName</column-name><column-value><![CDATA[");
-		sb.append(getTaskName());
-		sb.append("]]></column-value></column>");
+        Object returnValue = method.invoke(_taskRemoteModel,
+                remoteParameterValues);
 
-		sb.append("</model>");
+        if (returnValue != null) {
+            returnValue = ClpSerializer.translateOutput(returnValue);
+        }
 
-		return sb.toString();
-	}
+        return returnValue;
+    }
 
-	private long _taskId;
-	private long _userId;
-	private String _userUuid;
-	private String _taskName;
-	private BaseModel<?> _taskRemoteModel;
+    public void persist() throws SystemException {
+        if (this.isNew()) {
+            TaskLocalServiceUtil.addTask(this);
+        } else {
+            TaskLocalServiceUtil.updateTask(this);
+        }
+    }
+
+    @Override
+    public Task toEscapedModel() {
+        return (Task) ProxyUtil.newProxyInstance(Task.class.getClassLoader(),
+            new Class[] { Task.class }, new AutoEscapeBeanHandler(this));
+    }
+
+    public Task toUnescapedModel() {
+        return this;
+    }
+
+    @Override
+    public Object clone() {
+        TaskClp clone = new TaskClp();
+
+        clone.setTaskId(getTaskId());
+        clone.setUserId(getUserId());
+        clone.setTaskName(getTaskName());
+
+        return clone;
+    }
+
+    public int compareTo(Task task) {
+        long primaryKey = task.getPrimaryKey();
+
+        if (getPrimaryKey() < primaryKey) {
+            return -1;
+        } else if (getPrimaryKey() > primaryKey) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof TaskClp)) {
+            return false;
+        }
+
+        TaskClp task = (TaskClp) obj;
+
+        long primaryKey = task.getPrimaryKey();
+
+        if (getPrimaryKey() == primaryKey) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) getPrimaryKey();
+    }
+
+    @Override
+    public String toString() {
+        StringBundler sb = new StringBundler(7);
+
+        sb.append("{taskId=");
+        sb.append(getTaskId());
+        sb.append(", userId=");
+        sb.append(getUserId());
+        sb.append(", taskName=");
+        sb.append(getTaskName());
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    public String toXmlString() {
+        StringBundler sb = new StringBundler(13);
+
+        sb.append("<model><model-name>");
+        sb.append("com.liferay.timesheet.model.Task");
+        sb.append("</model-name>");
+
+        sb.append(
+            "<column><column-name>taskId</column-name><column-value><![CDATA[");
+        sb.append(getTaskId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>userId</column-name><column-value><![CDATA[");
+        sb.append(getUserId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>taskName</column-name><column-value><![CDATA[");
+        sb.append(getTaskName());
+        sb.append("]]></column-value></column>");
+
+        sb.append("</model>");
+
+        return sb.toString();
+    }
 }
