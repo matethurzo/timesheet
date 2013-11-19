@@ -14,31 +14,31 @@
 			<h:inputText id="taskName" value="#{taskBean.taskName}"></h:inputText>
 
 			<h:outputText value="Start:"></h:outputText>
-			<h:inputText id="startTime" value="#{taskBean.startTime}">
+			<h:inputText id="startDate" value="#{taskBean.start}">
 				<f:convertDateTime pattern="HHmm"></f:convertDateTime>
 			</h:inputText>
 
 			<h:outputText value="End:"></h:outputText>
-			<h:inputText id="endTime" value="#{taskBean.endTime}">
+			<h:inputText id="endDate" value="#{taskBean.end}">
 				<f:convertDateTime pattern="HHmm"></f:convertDateTime>
 			</h:inputText>
 
-			<h:commandButton id="submit" value="Submit" action="#{taskBean.createTaskSession}"></h:commandButton>
-			<h:message for="startTime" showSummary="true"></h:message>
+			<h:commandButton id="submit" value="Submit" action="#{taskBean.createTask}"></h:commandButton>
+			<h:message for="startDate" showSummary="true"></h:message>
 		</h:form>
 
-		<h:dataTable value="#{taskBean.taskSessionsByD_U}" var="taskSession">
+		<h:dataTable value="#{taskBean.taskToday}" var="task">
 			<h:column>
 				<f:facet name="header">Name</f:facet>
-				#{taskSession.taskName}
+				#{task.taskName}
 			</h:column>
 			<h:column>
 				<f:facet name="header">Start</f:facet>
-				#{taskSession.startTime}
+				#{task.startDate}
 			</h:column>
 			<h:column>
 				<f:facet name="header">End</f:facet>
-				#{taskSession.endTime}
+				#{task.endDate}
 			</h:column>
 		</h:dataTable>
 	</h:body>

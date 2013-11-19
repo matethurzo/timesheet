@@ -1,115 +1,131 @@
-/**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
-
 package com.liferay.timesheet.model;
 
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * This class is used by SOAP remote services, specifically {@link com.liferay.timesheet.service.http.TaskServiceSoap}.
  *
- * @author    Istvan Sajtos
+ * @author    Adorjan
  * @see       com.liferay.timesheet.service.http.TaskServiceSoap
  * @generated
  */
 public class TaskSoap implements Serializable {
-	public static TaskSoap toSoapModel(Task model) {
-		TaskSoap soapModel = new TaskSoap();
+    private long _taskId;
+    private long _companyId;
+    private long _userId;
+    private Date _startDate;
+    private Date _endDate;
+    private String _taskName;
 
-		soapModel.setTaskId(model.getTaskId());
-		soapModel.setUserId(model.getUserId());
-		soapModel.setTaskName(model.getTaskName());
+    public TaskSoap() {
+    }
 
-		return soapModel;
-	}
+    public static TaskSoap toSoapModel(Task model) {
+        TaskSoap soapModel = new TaskSoap();
 
-	public static TaskSoap[] toSoapModels(Task[] models) {
-		TaskSoap[] soapModels = new TaskSoap[models.length];
+        soapModel.setTaskId(model.getTaskId());
+        soapModel.setCompanyId(model.getCompanyId());
+        soapModel.setUserId(model.getUserId());
+        soapModel.setStartDate(model.getStartDate());
+        soapModel.setEndDate(model.getEndDate());
+        soapModel.setTaskName(model.getTaskName());
 
-		for (int i = 0; i < models.length; i++) {
-			soapModels[i] = toSoapModel(models[i]);
-		}
+        return soapModel;
+    }
 
-		return soapModels;
-	}
+    public static TaskSoap[] toSoapModels(Task[] models) {
+        TaskSoap[] soapModels = new TaskSoap[models.length];
 
-	public static TaskSoap[][] toSoapModels(Task[][] models) {
-		TaskSoap[][] soapModels = null;
+        for (int i = 0; i < models.length; i++) {
+            soapModels[i] = toSoapModel(models[i]);
+        }
 
-		if (models.length > 0) {
-			soapModels = new TaskSoap[models.length][models[0].length];
-		}
-		else {
-			soapModels = new TaskSoap[0][0];
-		}
+        return soapModels;
+    }
 
-		for (int i = 0; i < models.length; i++) {
-			soapModels[i] = toSoapModels(models[i]);
-		}
+    public static TaskSoap[][] toSoapModels(Task[][] models) {
+        TaskSoap[][] soapModels = null;
 
-		return soapModels;
-	}
+        if (models.length > 0) {
+            soapModels = new TaskSoap[models.length][models[0].length];
+        } else {
+            soapModels = new TaskSoap[0][0];
+        }
 
-	public static TaskSoap[] toSoapModels(List<Task> models) {
-		List<TaskSoap> soapModels = new ArrayList<TaskSoap>(models.size());
+        for (int i = 0; i < models.length; i++) {
+            soapModels[i] = toSoapModels(models[i]);
+        }
 
-		for (Task model : models) {
-			soapModels.add(toSoapModel(model));
-		}
+        return soapModels;
+    }
 
-		return soapModels.toArray(new TaskSoap[soapModels.size()]);
-	}
+    public static TaskSoap[] toSoapModels(List<Task> models) {
+        List<TaskSoap> soapModels = new ArrayList<TaskSoap>(models.size());
 
-	public TaskSoap() {
-	}
+        for (Task model : models) {
+            soapModels.add(toSoapModel(model));
+        }
 
-	public long getPrimaryKey() {
-		return _taskId;
-	}
+        return soapModels.toArray(new TaskSoap[soapModels.size()]);
+    }
 
-	public void setPrimaryKey(long pk) {
-		setTaskId(pk);
-	}
+    public long getPrimaryKey() {
+        return _taskId;
+    }
 
-	public long getTaskId() {
-		return _taskId;
-	}
+    public void setPrimaryKey(long pk) {
+        setTaskId(pk);
+    }
 
-	public void setTaskId(long taskId) {
-		_taskId = taskId;
-	}
+    public long getTaskId() {
+        return _taskId;
+    }
 
-	public long getUserId() {
-		return _userId;
-	}
+    public void setTaskId(long taskId) {
+        _taskId = taskId;
+    }
 
-	public void setUserId(long userId) {
-		_userId = userId;
-	}
+    public long getCompanyId() {
+        return _companyId;
+    }
 
-	public String getTaskName() {
-		return _taskName;
-	}
+    public void setCompanyId(long companyId) {
+        _companyId = companyId;
+    }
 
-	public void setTaskName(String taskName) {
-		_taskName = taskName;
-	}
+    public long getUserId() {
+        return _userId;
+    }
 
-	private long _taskId;
-	private long _userId;
-	private String _taskName;
+    public void setUserId(long userId) {
+        _userId = userId;
+    }
+
+    public Date getStartDate() {
+        return _startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        _startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return _endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        _endDate = endDate;
+    }
+
+    public String getTaskName() {
+        return _taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        _taskName = taskName;
+    }
 }

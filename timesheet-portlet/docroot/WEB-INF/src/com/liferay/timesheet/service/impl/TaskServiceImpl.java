@@ -1,17 +1,3 @@
-/**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- */
-
 package com.liferay.timesheet.service.impl;
 
 import com.liferay.timesheet.service.base.TaskServiceBaseImpl;
@@ -26,14 +12,14 @@ import com.liferay.timesheet.service.base.TaskServiceBaseImpl;
  * This is a remote service. Methods of this service are expected to have security checks based on the propagated JAAS credentials because this service can be accessed remotely.
  * </p>
  *
- * @author Istvan Sajtos
+ * @author Adorjan
  * @see com.liferay.timesheet.service.base.TaskServiceBaseImpl
  * @see com.liferay.timesheet.service.TaskServiceUtil
  */
 public class TaskServiceImpl extends TaskServiceBaseImpl {
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this interface directly. Always use {@link com.liferay.timesheet.service.TaskServiceUtil} to access the task remote service.
-	 */
+    /*
+     * NOTE FOR DEVELOPERS:
+     *
+     * Never reference this interface directly. Always use {@link com.liferay.timesheet.service.TaskServiceUtil} to access the task remote service.
+     */
 }
