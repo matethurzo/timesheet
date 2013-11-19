@@ -5,7 +5,7 @@
 
 	<namespace>timesheet</namespace>
 
-	<entity name="Task" local-service="true" remote-service="false">
+	<entity name="Task" local-service="true" remote-service="true">
 		<!-- PK fields -->
 
 		<column name="taskId" type="long" primary="true" />
@@ -23,17 +23,20 @@
 			<finder-column name="taskName" />
 			<finder-column name="userId" />
 		</finder>
-	</entity>
 
-	<entity name="TaskSession" local-service="true" remote-service="false">
+	</entity>
+	
+	<entity name="TaskSession" local-service="true" remote-service="true">
 		<!-- PK fields -->
 
 		<column name="taskSessionId" type="long" primary="true" />
 
 		<!-- Audit fields -->
 
-		<column name="endTime" type="Date" />
-		<column name="startTime" type="Date" />
 		<column name="taskId" type="long" />
+		<column name="startTime" type="Date" />
+		<column name="endTime" type="Date" />
+
 	</entity>
+	
 </service-builder>
